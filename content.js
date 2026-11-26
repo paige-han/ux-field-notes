@@ -1,6 +1,6 @@
 // Course content. Edit or add lessons here; the page renders whatever is in COURSE.
 window.COURSE = {
-  version: "1.2",
+  version: "1.3",
   modules: [
     { id: "m1", no: "01", ko: "디자인의 기초", en: "Foundations" },
     { id: "m2", no: "02", ko: "비주얼 & 반응형", en: "Visual & Responsive" },
@@ -13,6 +13,9 @@ window.COURSE = {
     { id: "m9", no: "09", ko: "실무 & 커리어", en: "Practice & Career" }
   ],
   changelog: [
+    { date: "2026-11-25", version: "1.3",
+      ko: "수업 장면에 목업 카드 30개 추가: 피드백을 고치기 전/후 화면으로 보여줌(모서리, 간격, 주색, 위계, 그리드, 60-30-10, 오류 문장 등). 실제 과제 화면이 아니라 피드백의 요점만 그린 도식.",
+      en: "30 mock-up cards in the class scenes show feedback as before/after screens (corners, gaps, primary colour, hierarchy, grid, 60-30-10, error text and more). They are schematic drawings of the point being made, not anyone's actual work." },
     { date: "2026-11-25", version: "1.2",
       ko: "수업 장면의 높이를 고정: 말풍선과 카드 길이가 달라져도 장면 영역이 움직이지 않음.",
       en: "Class scenes keep one height: the stage no longer shifts as speech bubbles and cards change length." },
@@ -991,4 +994,37 @@ window.COURSE.scenes = {
 var a=by("stakeholder-ci"); if(a){a.title={ko:"리서치 방법 · 이해관계자 인터뷰 · 관찰",en:"Research methods · stakeholder interviews · observation"};}
 var b=by("data-driven"); if(b){b.title={ko:"데이터 드리븐 · 차트 고르기 · A/B 테스트",en:"Data-driven design · choosing charts · A/B tests"};}
 C.lessons.forEach(function(l){var sc=C.scenes[l.id]; if(sc&&sc.session&&l.src&&l.src.ko.indexOf("녹화본")<0){l.src={ko:l.src.ko+" + 수업 녹화본",en:l.src.en+" + class recordings"};}});
+})();
+
+(function(){var S=window.COURSE.scenes,set=function(id,t,card){var b=S[id]&&S[id].beats.find(function(x){return x.t===t});if(b)b.card=card;else console.warn("mock target missing",id,t);};
+set("hifi-review","00:15:01",{"kind": "mock", "id": "visible-path", "ko": "제스처 없이도 되는 길을 하나 둔다", "en": "Keep one path that needs no gesture", "la": {"ko": "길게 눌러야 나옴", "en": "Long-press only"}, "lb": {"ko": "버튼이 보임", "en": "A visible button"}});
+set("hifi-review","01:01:06",{"kind": "mock", "id": "radius", "ko": "모서리 둥글기 값을 하나로 맞춘다", "en": "One corner-radius value"});
+set("hifi-review","01:03:51",{"kind": "mock", "id": "photo-text", "ko": "사진 위 글씨: 어두운 막을 깔면 읽힌다", "en": "Text on a photo: a dark overlay makes it readable"});
+set("hifi-review","01:07:03",{"kind": "mock", "id": "grey-bg", "ko": "아주 옅은 회색 배경에서 시작한다", "en": "Start from a very faint grey background", "la": {"ko": "흰 배경", "en": "White background"}, "lb": {"ko": "옅은 회색 배경", "en": "Faint grey background"}});
+set("hifi-review","01:08:35",{"kind": "mock", "id": "no-decor", "ko": "있어야 하는 이유가 있을 때만 그린다", "en": "Draw it only when it has a reason to exist"});
+set("hifi-review","01:19:33",{"kind": "mock", "id": "wrap", "ko": "한 곳만 줄이지 않고 두 줄로 둔다", "en": "Let it wrap; don't squeeze one item", "la": {"ko": "하나만 자간을 줄임", "en": "One item squeezed"}, "lb": {"ko": "두 줄로 둠", "en": "Wrapped to two lines"}});
+set("hifi-review","01:25:45",{"kind": "mock", "id": "image-size", "ko": "이미지는 의미만 전할 만큼, 여백은 넉넉하게", "en": "Image just big enough; more white space"});
+set("hifi-review-2","01:47:21",{"kind": "mock", "id": "primary-colour", "ko": "주색은 가장 중요한 것에만 쓴다", "en": "Primary colour only on what matters most"});
+set("hifi-review-2","01:48:18",{"kind": "mock", "id": "hierarchy", "ko": "먼저 읽을 것을 가장 크게", "en": "Largest is what's read first"});
+set("hifi-review-2","01:43:23",{"kind": "mock", "id": "gaps", "ko": "간격이 좁으면 옆의 것까지 눌린다", "en": "Tight gaps cause mis-taps"});
+set("hifi-review-2","01:45:04",{"kind": "mock", "id": "border", "ko": "테두리가 두꺼우면 지저분해 보인다", "en": "A thick border just looks messy"});
+set("hifi-review-2","01:48:43",{"kind": "mock", "id": "legend", "ko": "반복되는 설명은 범례로 한 번만", "en": "Explain repeated icons once, in a legend"});
+set("ui-details","02:24:22",{"kind": "mock", "id": "line-height", "ko": "큰 글자는 행간 좁게, 작은 글자는 넓게", "en": "Tight for large text, loose for small", "la": {"ko": "큰 글자", "en": "Large text"}, "lb": {"ko": "작은 글자", "en": "Small text"}});
+set("ui-details","02:30:45",{"kind": "mock", "id": "tab-padding", "ko": "가로는 글자가 정하고, 세로는 규칙이 정한다", "en": "Text sets the width; the rule sets the height", "la": {"ko": "짧은 말", "en": "Short words"}, "lb": {"ko": "긴 말 (번역)", "en": "Long words (translated)"}});
+set("visual-basics","00:18:35",{"kind": "mock", "id": "grouping", "ko": "묶음 안은 좁게, 묶음 사이는 넓게", "en": "Tight within groups, wide between", "la": {"ko": "여백이 다 같음", "en": "All gaps equal"}, "lb": {"ko": "묶음이 보임", "en": "Groups appear"}});
+set("visual-basics","02:41:27",{"kind": "mock", "id": "line-length", "ko": "줄이 길면 다음 줄을 못 찾는다", "en": "Long lines make the next line hard to find", "la": {"ko": "너무 긴 줄", "en": "Too long"}, "lb": {"ko": "70~80자", "en": "70–80 characters"}});
+set("color","00:42:19",{"kind": "mock", "id": "fills", "ko": "면을 다 칠하면 선택한 것이 안 보인다", "en": "Fill everything and the selection disappears", "la": {"ko": "면을 다 칠함", "en": "All filled"}, "lb": {"ko": "선 위주", "en": "Mostly lines"}});
+set("color","00:29:46",{"kind": "mock", "id": "group-tint", "ko": "묶는 색이 눈에 들어오면 안 된다", "en": "The grouping colour must not be noticed", "la": {"ko": "묶는 색이 강함", "en": "Strong grouping colour"}, "lb": {"ko": "묶는 색이 옅음", "en": "Faint grouping colour"}});
+set("responsive","00:31:28",{"kind": "mock", "id": "grid12", "ko": "12컬럼은 2, 3, 4칸으로 다 나뉜다", "en": "Twelve columns split into 2, 3 or 4", "la": {"ko": "2칸 (6+6)", "en": "Halves (6+6)"}, "lb": {"ko": "3칸, 4칸", "en": "Thirds and quarters"}});
+set("responsive","00:32:52",{"kind": "mock", "id": "max-width", "ko": "최대 폭을 정하고 그 안에 배치한다", "en": "Set a max width and lay out inside it", "la": {"ko": "화면 전체에 펼침", "en": "Spread edge to edge"}, "lb": {"ko": "가운데 폭 안에", "en": "Within the centre width"}});
+set("mobile-ui","01:59:59",{"kind": "mock", "id": "one-primary", "ko": "한 화면에 주요 버튼은 하나", "en": "One primary button per screen", "la": {"ko": "둘 다 강조", "en": "Both emphasised"}, "lb": {"ko": "하나만 강조", "en": "One emphasised"}});
+set("mobile-ui","02:00:55",{"kind": "mock", "id": "sixty", "ko": "60-30-10: 강조색은 가장 적게", "en": "60-30-10: the accent is used least", "la": {"ko": "강조색이 60", "en": "Accent as the 60"}, "lb": {"ko": "바탕 60 · 보조 30 · 강조 10", "en": "Base 60 · support 30 · accent 10"}});
+set("aida","00:23:42",{"kind": "mock", "id": "emphasis", "ko": "강조가 많으면 아무것도 강조되지 않는다", "en": "Emphasise everything and nothing is emphasised", "la": {"ko": "강조가 여럿", "en": "Many emphases"}, "lb": {"ko": "강조가 하나", "en": "One emphasis"}});
+set("aida","00:29:23",{"kind": "mock", "id": "banner", "ko": "배너는 넓게, 콘텐츠는 가운데 폭 안에", "en": "Wide banner, content within the centre width", "la": {"ko": "콘텐츠도 끝까지", "en": "Content edge to edge"}, "lb": {"ko": "콘텐츠는 가운데", "en": "Content centred"}});
+set("storytelling","00:21:51",{"kind": "mock", "id": "pacing", "ko": "중요한 것만 먼저, 자세한 건 눌러서", "en": "What matters first; details on tap", "la": {"ko": "초창기", "en": "Early version"}, "lb": {"ko": "지금", "en": "Now"}});
+set("wireframe-fidelity","02:28:03",{"kind": "mock", "id": "numbers-first", "ko": "숫자 먼저, 달력은 아래 디테일로", "en": "Numbers first, calendar as detail below", "la": {"ko": "달력이 첫 화면을 차지", "en": "Calendar fills the first screen"}, "lb": {"ko": "숫자가 먼저", "en": "Numbers first"}});
+set("wireframe-fidelity","02:27:15",{"kind": "mock", "id": "ref-line", "ko": "차트에는 기준선을 하나 둔다", "en": "Give a chart a reference line", "la": {"ko": "기준선 없음", "en": "No reference line"}, "lb": {"ko": "목표선 있음", "en": "With a goal line"}});
+set("heuristics","02:43:21",{"kind": "mock", "id": "consistency", "ko": "같은 버튼이 페이지마다 다르면 헷갈린다", "en": "The same button changing per page confuses", "la": {"ko": "이 페이지", "en": "This page"}, "lb": {"ko": "다음 페이지", "en": "Next page"}});
+set("heuristics","02:50:47",{"kind": "mock", "id": "error-msg", "ko": "무엇이 잘못됐고 어떻게 고치는지 말해준다", "en": "Say what went wrong and how to fix it"});
+set("data-driven","02:48:25",{"kind": "mock", "id": "no-3d", "ko": "3D 차트는 절대 쓰지 않는다", "en": "Never use 3D charts", "la": {"ko": "3D", "en": "3D"}, "lb": {"ko": "평면", "en": "Flat"}});
 })();

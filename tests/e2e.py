@@ -121,6 +121,22 @@ with sync_playwright() as p:
     check("stage height stays fixed on mobile", len(hm) == 1, str(sorted(hm)))
     f.close()
 
+
+    # mock-up cards render for every beat that has one
+    k = browser.new_page(viewport={"width": 1200, "height": 900})
+    k.goto("http://localhost:8790/#home"); k.wait_for_timeout(600)
+    res = k.evaluate("""()=>{const S=window.COURSE.scenes;let n=0,bad=[];for(const id in S)for(const b of S[id].beats)if(b.card&&b.card.kind==='mock'){n++;const h=window.__card(b.card);if(!h||h.indexOf('<svg')<0||h.indexOf('NaN')>=0||h.indexOf('undefined')>=0)bad.push(b.card.id);}return {n,bad};}""")
+    check("mock-up cards all render", res["n"] >= 30 and not res["bad"], str(res))
+    k.close()
+
+
+    # the scene never scrolls sideways on a phone
+    k = browser.new_page(viewport={"width": 390, "height": 900})
+    k.goto("http://localhost:8790/#l-mobile-ui"); k.wait_for_timeout(700)
+    sw = k.evaluate("(()=>{const s=document.querySelector('.scene');return [s.scrollWidth,s.clientWidth]})()")
+    check("scene has no sideways overflow on mobile", sw[0] <= sw[1] + 1, str(sw))
+    k.close()
+
     check("no console or page errors", not errors, "; ".join(errors)[:300])
     browser.close()
 

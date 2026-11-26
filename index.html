@@ -200,6 +200,10 @@ h3.sec{font-weight:700;font-size:22px;letter-spacing:-.02em;margin:44px 0 14px}
 .ccard ul{margin:0;padding-left:20px}
 .ccard ul li{padding:4px 0;animation:pop .35s both}
 .ccard .q{font-size:18px;font-weight:600;line-height:1.45}
+.ccard.mock{padding:14px 14px 12px}
+.ccard.mock svg{display:block;width:100%;max-width:292px;margin:0 auto;height:auto;background:var(--paper-2,#ECECF1);border-radius:10px}
+.ccard.mock svg text{font-size:8px;font-weight:600;fill:#6B6D7C}
+.ccard.mock p{min-height:2.8em;margin:10px 2px 0;font-size:13.5px;font-weight:600;line-height:1.4;text-align:center}
 .ccard .sh{display:grid;gap:8px}
 .ccard .sh div{border-radius:10px;padding:10px 12px;font-weight:600}
 .ccard .sh .a{background:var(--then-bg);color:var(--then)} .ccard .sh .b{background:var(--now-bg);color:var(--now)}
@@ -211,7 +215,7 @@ h3.sec{font-weight:700;font-size:22px;letter-spacing:-.02em;margin:44px 0 14px}
 .vtoggle .vi,.controls .pi{display:inline-flex}
 .controls button.step:disabled{opacity:1;color:var(--rule);cursor:not-allowed;background:var(--card)}
 .controls button.play{width:auto;min-width:96px;gap:8px;display:inline-flex;align-items:center;justify-content:center;padding:0 14px;background:var(--ink);color:var(--paper);border-color:var(--ink);font-weight:600}
-.segs{display:flex;gap:3px;flex:1}
+.segs{display:flex;gap:3px;flex:1;min-width:0}
 .segs .seg{flex:1;min-width:0;height:24px;padding:0;border:0;background:none;display:flex;align-items:center;cursor:pointer}
 .segs .seg i{display:block;width:100%;height:4px;border-radius:2px;background:var(--rule);position:relative;overflow:hidden}
 .segs .seg.past i{background:var(--ink-3)}
@@ -219,7 +223,7 @@ h3.sec{font-weight:700;font-size:22px;letter-spacing:-.02em;margin:44px 0 14px}
 .segs.paused .seg.cur i::after{animation-play-state:paused}
 @keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 .note-fic{font-size:11.5px;color:var(--ink-3);padding:0 16px 12px}
-@media (max-width:900px){.stage{grid-template-columns:1fr;padding:56px 16px 16px}.cardbox{order:-1}.cast{gap:6px;padding-right:0;flex-wrap:nowrap}.cast .who[data-who="now"]{margin-left:2px;padding-left:6px}.who .ani{width:38px;height:44px}.who span{font-size:10.5px;white-space:nowrap}.who span{font-size:10.5px}}
+@media (max-width:900px){.stage{grid-template-columns:minmax(0,1fr);padding:56px 16px 16px}.cardbox{order:-1}.cast{gap:2px;padding-right:0;flex-wrap:nowrap;justify-content:space-between}.cast .who{min-width:0;flex:0 1 auto}.cast .who[data-who="now"]{margin-left:2px;padding-left:6px}.who .ani{width:38px;height:44px}.who span{font-size:10.5px;white-space:nowrap}.who span{font-size:10.5px}}
 @media (prefers-reduced-motion:reduce){.ccard,.ccard ol li,.who.on .ani,.spark,.orbit{animation:none}.who.on{transform:none}}
 @media (max-width:900px){
   .app{grid-template-columns:1fr}
@@ -539,8 +543,74 @@ const ICONS={
   grid:`<svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="10" width="20" height="20" rx="4" fill="var(--now)"/><rect x="36" y="10" width="20" height="20" rx="4" fill="none" stroke="var(--now)" stroke-width="3"/><rect x="8" y="36" width="20" height="20" rx="4" fill="none" stroke="var(--now)" stroke-width="3"/><path d="M38 46h16M46 38v16" stroke="var(--now)" stroke-width="3" stroke-linecap="round"/></svg>`,
   bag:`<svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><path d="M14 10h36l-3 6 3 6v30l-3 4H17l-3-4V22l3-6z" fill="var(--now-bg)" stroke="var(--now)" stroke-width="3" stroke-linejoin="round"/><circle cx="32" cy="36" r="9" fill="var(--now)"/><path d="M20 24h24" stroke="var(--now)" stroke-width="3"/></svg>`
 };
+/* small schematic mock-ups that illustrate a piece of feedback, usually as before → after; invented, never a copy of anyone's work */
+const MK={ink:"#1B1A24",mid:"#8E90A0",soft:"#D5D6DE",bg:"#FFFFFF",pg:"#F1F1F5",acc:"#5B3FD6",acc2:"#D9D2F7",pink:"#D8437A",pink2:"#F3C3D4",warm:"#B8731A",ph:"#E9E4DA",ph2:"#CFC8BA"};
+const mkPhone=(x,inner)=>`<g transform="translate(${x},6)"><rect width="108" height="168" rx="14" fill="${MK.bg}" stroke="${MK.soft}"/><rect x="42" y="6" width="24" height="4" rx="2" fill="${MK.soft}"/>${inner}</g>`;
+const mkWin=(x,inner,fill)=>`<g transform="translate(${x},16)"><rect width="116" height="148" rx="8" fill="${fill||MK.bg}" stroke="${MK.soft}"/><circle cx="9" cy="8" r="2" fill="${MK.soft}"/><circle cx="16" cy="8" r="2" fill="${MK.soft}"/><circle cx="23" cy="8" r="2" fill="${MK.soft}"/>${inner}</g>`;
+const mkBar=(x,y,w,c,h=5)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${h/2}" fill="${c}"/>`;
+const mkBox=(x,y,w,h,f,st,r=6,sw=1)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${f}"${st?` stroke="${st}" stroke-width="${sw}"`:""}/>`;
+const mkTx=(x,y,t,c,sz=7,w=600,a="start")=>`<text x="${x}" y="${y}" text-anchor="${a}" style="font-size:${sz}px;font-weight:${w};fill:${c}">${esc(t)}</text>`;
+const mkPhoto=(x,y,w,h,r=8)=>`<g transform="translate(${x},${y})"><rect width="${w}" height="${h}" rx="${r}" fill="${MK.ph}"/><path d="M0 ${h*.8}L${w*.25} ${h*.5}L${w*.42} ${h*.68}L${w*.64} ${h*.36}L${w} ${h*.8}V${h-r}a${r} ${r} 0 01-${r} ${r}H${r}a${r} ${r} 0 01-${r}-${r}z" fill="${MK.ph2}"/><circle cx="${w*.78}" cy="${h*.24}" r="${Math.min(w,h)*.1}" fill="#F6F1E6"/></g>`;
+const two=(f,P=mkPhone,xa=14,xb=138)=>P(xa,f(true))+P(xb,f(false));
+const MOCKS={
+  "primary-colour":()=>{ const row=(y,b)=>mkBox(8,y,92,34,MK.bg,b?MK.pink:MK.soft,7)+mkBox(14,y+10,24,14,MK.pink,null,4)+mkBar(44,y+10,30,b?MK.pink:MK.ink)+mkBar(44,y+20,22,b?MK.pink2:MK.soft)+mkBar(80,y+14,14,b?MK.pink:MK.mid,6);
+    return two(b=>mkBar(8,20,40,MK.ink,6)+row(34,b)+row(74,b)+row(114,b)+mkBox(8,152,92,10,b?MK.pink:MK.pg,null,5)); },
+  "photo-text":()=>{ const txt=mkBar(16,84,54,"#FFFFFF",7)+mkBar(16,96,34,"#FFFFFF",5), rest=mkBar(8,122,60,MK.soft)+mkBar(8,133,80,MK.soft)+mkBar(8,144,44,MK.soft);
+    return two(b=>mkPhoto(8,22,92,88)+(b?"":mkBox(8,22,92,88,MK.ink,null,8).replace("/>",' opacity=".55"/>'))+txt+rest); },
+  "radius":()=>two(b=>mkBar(8,22,46,MK.ink,6)+mkBox(8,40,92,26,MK.acc,null,b?2:8)+mkBox(8,74,92,26,MK.bg,MK.mid,b?13:8)+mkBox(8,108,44,26,MK.pg,null,b?6:8)+mkBox(56,108,44,26,MK.pg,null,b?0:8)+mkBox(8,142,92,18,MK.pg,null,b?9:8)),
+  "grey-bg":()=>{ const cards=b=>[30,74,118].map(y=>mkBox(10,y,88,36,MK.bg,b?MK.soft:null,8)+mkBar(18,y+10,40,MK.ink)+mkBar(18,y+21,60,MK.soft)).join("");
+    return mkPhone(14,cards(true))+mkPhone(138,mkBox(1,18,106,149,"#EEF0F4",null,0)+mkBox(1,150,106,17,"#EEF0F4",null,13)+cards(false)); },
+  "no-decor":()=>two(b=>[26,72,118].map(y=>(b?`<rect x="13" y="${y+4}" width="88" height="38" rx="8" fill="#000" opacity=".22"/>`:"")+mkBox(10,y,88,38,MK.bg,b?MK.ink:MK.soft,8,b?1.6:1)+mkBar(18,y+9,38,MK.ink)+(b?`<line x1="18" y1="${y+19}" x2="90" y2="${y+19}" stroke="${MK.mid}"/>`:"")+mkBar(18,y+25,58,MK.soft)).join("")),
+  "wrap":()=>{ const chip=(x,y,w,h,inner)=>mkBox(x,y,w,h,MK.pg,MK.soft,8)+inner;
+    return two(b=>mkBar(8,22,50,MK.ink,6)+chip(8,40,44,34,mkBar(15,55,28,MK.ink))+chip(56,40,44,34,b?`<g transform="translate(60,53) scale(.62,1)">${mkBar(0,0,58,MK.ink)}</g>`:mkBar(63,49,28,MK.ink)+mkBar(63,59,18,MK.ink))+chip(8,80,44,34,mkBar(15,95,22,MK.ink))+chip(56,80,44,34,mkBar(63,95,26,MK.ink))); },
+  "image-size":()=>two(b=>b?mkPhoto(8,20,92,104)+mkBar(8,132,70,MK.ink,9)+mkBar(8,148,50,MK.soft):mkPhoto(8,24,92,56)+mkBar(8,94,54,MK.ink,7)+mkBar(8,110,84,MK.soft)+mkBar(8,121,76,MK.soft)+mkBar(8,132,60,MK.soft)),
+  "visible-path":()=>{ const base=mkBox(8,24,60,22,MK.pg,null,10)+mkBox(40,52,60,22,MK.acc2,null,10)+mkBox(8,80,50,22,MK.pg,null,10); const mic=x=>`<circle cx="${x}" cy="149" r="9" fill="${MK.acc}"/><rect x="${x-2}" y="143" width="4" height="8" rx="2" fill="#fff"/>`; const cam=x=>`<circle cx="${x}" cy="149" r="9" fill="${MK.pg}" stroke="${MK.mid}"/><rect x="${x-5}" y="145.5" width="7" height="7" rx="1.5" fill="${MK.ink}"/><path d="M${x+2} 149l4-3v6z" fill="${MK.ink}"/>`;
+    return mkPhone(14,base+mkBox(8,138,70,22,MK.bg,MK.soft,11)+mic(91)+`<circle cx="91" cy="149" r="13" fill="none" stroke="${MK.mid}" stroke-dasharray="2 3"/>`)+mkPhone(138,base+mkBox(8,138,48,22,MK.bg,MK.soft,11)+cam(69)+mic(91)); },
+  "hierarchy":()=>two(b=>[26,72,118].map(y=>mkBox(8,y,92,38,MK.bg,MK.soft,8)+(b?mkBar(15,y+9,40,MK.mid,6)+mkBar(15,y+22,40,MK.mid,6)+mkBar(70,y+15,22,MK.mid,6):mkBar(15,y+8,52,MK.ink,10)+mkBar(15,y+25,30,MK.soft,4)+mkBar(74,y+16,18,MK.mid,5))).join("")),
+  "gaps":()=>{ const tap=`<circle cx="54" cy="64" r="15" fill="${MK.acc}" opacity=".18"/><circle cx="54" cy="64" r="4" fill="${MK.acc}"/>`;
+    return mkPhone(14,[24,42,60,78,96,114,132].map(y=>mkBox(8,y,92,16,MK.pg,MK.soft,5)+mkBar(14,y+6,40,MK.ink,4)).join("")+tap)+mkPhone(138,[24,50,76,102,128].map(y=>mkBox(8,y,92,20,MK.pg,MK.soft,5)+mkBar(14,y+8,40,MK.ink,4)).join("")+tap.replace(/cy="64"/g,'cy="60"')); },
+  "border":()=>two(b=>[28,74,120].map(y=>mkBox(10,y,88,36,MK.bg,b?MK.ink:MK.soft,8,b?3.5:1)+mkBar(19,y+10,40,MK.ink)+mkBar(19,y+21,58,MK.soft)).join("")),
+  "legend":()=>{ const ic=(x,y,k)=>k===0?`<circle cx="${x}" cy="${y}" r="4" fill="${MK.acc}"/>`:k===1?mkBox(x-4,y-4,8,8,MK.warm,null,2):`<path d="M${x} ${y-5}l5 9h-10z" fill="${MK.ink}"/>`;
+    return mkPhone(14,[28,62,96,130].map((y,i)=>mkBox(8,y,92,28,MK.bg,MK.soft,6)+mkBar(14,y+6,34,MK.ink)+[0,1,2].map(k=>ic(18+k*28,y+19,k)+mkBar(25+k*28,y+17,13,MK.mid,4)).join("")).join(""))
+      +mkPhone(138,mkBox(8,22,92,18,MK.pg,null,6)+[0,1,2].map(k=>ic(18+k*28,31,k)+mkBar(25+k*28,29,13,MK.mid,4)).join("")+[48,76,104,132].map(y=>mkBox(8,y,92,22,MK.bg,MK.soft,6)+mkBar(14,y+9,34,MK.ink)+[0,1,2].map(k=>ic(64+k*13,y+11,k)).join("")).join("")); },
+  "line-height":()=>mkPhone(14,mkBar(10,34,84,MK.ink,13)+mkBar(10,52,60,MK.ink,13)+`<path d="M100 40v19" stroke="${MK.acc}" stroke-width="1.5"/>`+mkTx(54,96,"110%",MK.acc,11,700,"middle"))+mkPhone(138,[30,43,56,69,82].map((y,i)=>mkBar(10,y,[84,78,86,70,50][i],MK.mid,4)).join("")+`<path d="M100 32v13" stroke="${MK.acc}" stroke-width="1.5"/>`+mkTx(54,112,"150%",MK.acc,11,700,"middle")),
+  "tab-padding":()=>{ const tabs=(ws,y)=>{ let x=8; return ws.map((w,i)=>{ const r=mkBox(x,y,w,22,i?MK.pg:MK.acc,null,11)+mkBar(x+8,y+9,w-16,i?MK.mid:"#fff",4); x+=w+5; return r; }).join(""); };
+    const pad=`<path d="M4 40v22M2 40h4M2 62h4" stroke="${MK.warm}" stroke-width="1.2"/>`;
+    return mkPhone(14,tabs([30,34,26],40)+pad+mkBar(8,76,70,MK.soft)+mkBar(8,88,84,MK.soft)+mkBar(8,100,56,MK.soft))+mkPhone(138,tabs([46,52],40)+pad+mkBar(8,76,70,MK.soft)+mkBar(8,88,84,MK.soft)+mkBar(8,100,56,MK.soft)); },
+  "grouping":()=>mkPhone(14,[24,42,60,78,96,114,132,150].map((y,i)=>mkBar(10,y,i%4===0?52:[80,72,64][i%3],i%4===0?MK.ink:MK.soft,i%4===0?7:5)).join(""))+mkPhone(138,[24,36,47,58, 92,104,115,126].map((y,i)=>mkBar(10,y,i%4===0?52:[80,72,64][i%3],i%4===0?MK.ink:MK.soft,i%4===0?7:5)).join("")),
+  "line-length":()=>mkWin(8,[30,42,54,66,78,90].map((y,i)=>mkBar(6,y,i===5?60:104,MK.mid,4)).join("")+`<path d="M110 32v6H6v6" fill="none" stroke="${MK.pink}" stroke-dasharray="2 2"/>`)+mkWin(136,[30,42,54,66,78,90,102].map((y,i)=>mkBar(24,y,i===6?40:68,MK.mid,4)).join("")),
+  "fills":()=>{ const cell=(x,y,sel,b)=>mkBox(x,y,42,30,b?(sel?MK.acc:MK.acc2):(sel?MK.acc:MK.bg),b?null:(sel?null:MK.soft),7)+mkBar(x+8,y+12,24,sel?"#fff":(b?MK.acc:MK.mid),5);
+    return two(b=>mkBar(8,22,44,MK.ink,6)+cell(8,38,false,b)+cell(58,38,true,b)+cell(8,76,false,b)+cell(58,76,false,b)+cell(8,114,false,b)+cell(58,114,false,b)); },
+  "group-tint":()=>two(b=>mkBox(8,24,92,62,b?MK.acc:"#F3F2F8",null,9)+mkBar(15,33,40,b?"#fff":MK.ink,6)+mkBar(15,47,74,b?MK.acc2:MK.soft)+mkBar(15,58,64,b?MK.acc2:MK.soft)+mkBar(15,69,50,b?MK.acc2:MK.soft)+mkBox(8,94,92,62,b?MK.warm:"#F3F2F8",null,9)+mkBar(15,103,34,b?"#fff":MK.ink,6)+mkBar(15,117,70,b?"#F0DCC0":MK.soft)+mkBar(15,128,58,b?"#F0DCC0":MK.soft)+mkBar(15,139,66,b?"#F0DCC0":MK.soft)),
+  "grid12":()=>{ const cols=Array.from({length:12},(_,i)=>`<rect x="${8+i*8.4}" y="20" width="6" height="122" fill="${MK.pink2}" opacity=".55"/>`).join("");
+    return mkWin(8,cols+mkBox(8,26,48.4,50,MK.acc2,null,4)+mkBox(58.4,26,48.4,50,MK.acc2,null,4)+mkBox(8,84,98.8,24,MK.pg,MK.soft,4))+mkWin(136,cols+[0,1,2].map(k=>mkBox(8+k*33.6,26,31.2,50,MK.acc2,null,4)).join("")+[0,1,2,3].map(k=>mkBox(8+k*25.2,84,22.8,24,MK.pg,MK.soft,4)).join("")); },
+  "max-width":()=>mkWin(8,mkBar(4,28,108,MK.ink,7)+[44,55,66,77].map(y=>mkBar(4,y,108,MK.soft,4)).join("")+mkBox(4,92,108,40,MK.pg,null,4))+mkWin(136,`<path d="M26 18v128M90 18v128" stroke="${MK.pink}" stroke-dasharray="2 3"/>`+mkBar(30,28,56,MK.ink,7)+[44,55,66,77].map(y=>mkBar(30,y,56,MK.soft,4)).join("")+mkBox(30,92,56,40,MK.pg,null,4)),
+  "one-primary":()=>two(b=>mkBar(8,26,60,MK.ink,7)+mkBar(8,42,84,MK.soft)+mkBar(8,53,70,MK.soft)+mkBox(8,112,92,22,MK.acc,null,8)+mkBar(34,121,40,"#fff",4)+mkBox(8,138,92,22,b?MK.acc:MK.bg,b?null:MK.soft,8)+mkBar(34,147,40,b?"#fff":MK.mid,4)),
+  "sixty":()=>{ const scr=b=>mkBox(1,18,106,149,b?MK.acc:MK.bg,null,0)+mkBox(1,150,106,17,b?MK.acc:MK.bg,null,13)+mkBox(8,26,92,44,b?MK.warm:MK.pg,null,8)+mkBox(8,78,92,44,b?MK.warm:MK.pg,null,8)+mkBar(15,36,40,b?"#fff":MK.ink,6)+mkBar(15,88,40,b?"#fff":MK.ink,6)+mkBar(15,50,64,b?"#F0DCC0":MK.soft)+mkBar(15,102,64,b?"#F0DCC0":MK.soft)+mkBox(8,134,92,22,b?MK.pink:MK.acc,null,8);
+    return mkPhone(14,scr(true))+mkPhone(138,scr(false)); },
+  "emphasis":()=>mkWin(8,mkBox(4,20,108,26,MK.pink,null,4)+mkBar(10,29,60,"#fff",8)+mkBox(4,50,52,30,MK.acc,null,4)+mkBox(60,50,52,30,MK.warm,null,4)+mkBar(8,88,100,MK.pink,7)+mkBar(8,101,90,MK.ink,7)+mkBox(4,116,50,20,MK.acc,null,5)+mkBox(60,116,50,20,MK.pink,null,5))+mkWin(136,mkBar(14,30,78,MK.ink,10)+mkBar(14,48,60,MK.soft)+mkBar(14,59,70,MK.soft)+mkBox(14,76,44,18,MK.acc,null,6)+mkBox(14,106,40,30,MK.pg,null,4)+mkBox(60,106,40,30,MK.pg,null,4)),
+  "banner":()=>{ const ban=`<rect x="1" y="18" width="114" height="46" fill="${MK.acc2}"/>`;
+    return mkWin(8,ban+mkBar(4,30,108,MK.ink,7)+mkBar(4,46,108,MK.acc,4)+[76,87,98,109].map(y=>mkBar(4,y,108,MK.soft,4)).join(""))+mkWin(136,ban+`<path d="M26 18v128M90 18v128" stroke="${MK.pink}" stroke-dasharray="2 3"/>`+mkBar(30,30,56,MK.ink,7)+mkBar(30,46,40,MK.acc,4)+[76,87,98,109].map(y=>mkBar(30,y,56,MK.soft,4)).join("")); },
+  "pacing":()=>mkPhone(14,mkPhoto(8,22,30,24,4)+[22,30,38].map(y=>mkBar(42,y,56,MK.mid,4)).join("")+[52,60,68,76,84,92,100,108,116,124,132,140,148].map((y,i)=>mkBar(8,y,[90,84,92,70,88,80,92,64,86,90,72,88,50][i],MK.soft,4)).join(""))+mkPhone(138,mkPhoto(8,22,92,84)+mkBar(8,116,60,MK.ink,7)+mkBar(8,130,80,MK.soft)+mkBar(8,146,34,MK.ink,8)),
+  "numbers-first":()=>{ const cal=(y,h)=>{ let r=mkBox(8,y,92,h,MK.pg,null,6); const rows=Math.round(h/13); for(let a=0;a<rows;a++)for(let c=0;c<7;c++){ r+=`<rect x="${12+c*12.4}" y="${y+4+a*12.4}" width="9" height="9" rx="2" fill="${(a*7+c)%3===0?MK.pink2:MK.acc2}"/>`; } return r; };
+    return mkPhone(14,mkBar(8,22,30,MK.ink,6)+cal(34,104)+mkTx(10,155,"72%",MK.ink,10,700))+mkPhone(138,mkTx(10,44,"72%",MK.ink,22,700)+mkBar(62,30,34,MK.soft)+mkBar(62,40,26,MK.soft)+[58,70].map((y,i)=>mkBar(8,y,[70,52][i],MK.acc2,7)).join("")+cal(88,66)); },
+  "ref-line":()=>{ const bars=[38,62,30,72,50,58].map((h,i)=>`<rect x="${12+i*15}" y="${140-h}" width="9" height="${h}" rx="2" fill="${MK.acc2}"/>`).join("")+`<line x1="8" y1="140" x2="102" y2="140" stroke="${MK.soft}"/>`;
+    return mkPhone(14,bars)+mkPhone(138,bars+`<line x1="8" y1="88" x2="102" y2="88" stroke="${MK.pink}" stroke-dasharray="3 3" stroke-width="1.3"/>`+mkTx(100,83,lang==="ko"?"목표":"Goal",MK.pink,7,700,"end")); },
+  "consistency":()=>mkPhone(14,mkBar(8,26,50,MK.ink,7)+mkBar(8,42,84,MK.soft)+mkBar(8,53,64,MK.soft)+mkBox(8,134,92,24,"#D64545",null,2)+mkBar(34,144,40,"#fff",4))+mkPhone(138,mkBar(8,26,50,MK.ink,7)+mkBar(8,42,84,MK.soft)+mkBar(8,53,64,MK.soft)+`<circle cx="84" cy="142" r="16" fill="#E8B923"/>`+mkBar(76,140,16,"#fff",4)),
+  "error-msg":()=>{ const dlg=(lines)=>mkBox(8,48,92,74,MK.bg,MK.soft,10)+`<circle cx="54" cy="64" r="7" fill="#D64545"/><rect x="53" y="59.5" width="2" height="6" rx="1" fill="#fff"/><circle cx="54" cy="68" r="1.1" fill="#fff"/>`+lines;
+    return mkPhone(14,mkBox(1,18,106,149,MK.pg,null,0)+mkBox(1,150,106,17,MK.pg,null,13)+dlg(mkTx(54,90,lang==="ko"?"에러 코드 20":"Error code 20",MK.ink,8,700,"middle")+mkBox(34,100,40,14,MK.pg,null,7)))
+      +mkPhone(138,mkBox(1,18,106,149,MK.pg,null,0)+mkBox(1,150,106,17,MK.pg,null,13)+dlg(mkTx(54,86,lang==="ko"?"카드가 만료됐어요":"Your card has expired",MK.ink,7,700,"middle")+mkTx(54,96,lang==="ko"?"다른 카드로 결제해 주세요":"Try another card",MK.mid,6,500,"middle")+mkBox(28,102,52,14,MK.acc,null,7))); },
+  "no-3d":()=>{ const hs=[44,70,56,84]; const flat=hs.map((h,i)=>`<rect x="${16+i*21}" y="${142-h}" width="13" height="${h}" rx="2" fill="${MK.acc}"/>`).join("")+`<line x1="8" y1="142" x2="102" y2="142" stroke="${MK.soft}"/>`;
+    const d3=hs.map((h,i)=>{ const x=14+i*21,y=142-h; return `<path d="M${x} ${y}l6-6h13l-6 6z" fill="${MK.acc2}"/><path d="M${x+13} ${y}l6-6v${h}l-6 6z" fill="#3E2A9E"/><rect x="${x}" y="${y}" width="13" height="${h}" fill="${MK.acc}"/>`; }).join("")+`<path d="M6 142h92l8-8" fill="none" stroke="${MK.soft}"/>`;
+    return mkPhone(14,d3)+mkPhone(138,flat); }
+};
+function mockHTML(c){ const f=MOCKS[c.id]; if(!f) return "";
+  const la=c.la?tx(c.la):(lang==="ko"?"고치기 전":"Before"), lb=c.lb?tx(c.lb):(lang==="ko"?"고친 뒤":"After");
+  return `<div class="ccard mock"><svg viewBox="0 0 260 196" role="img" aria-label="${esc(tx(c))}">${f()}<text x="68" y="191" text-anchor="middle">${esc(la)}</text><text x="192" y="191" text-anchor="middle">${esc(lb)}</text></svg><p>${esc(tx(c))}</p></div>`; }
+window.__card=c=>cardHTML(c);
 function cardHTML(c){
   if(!c) return "";
+  if(c.kind==="mock") return mockHTML(c);
   if(c.kind==="title") return `<div class="ccard"><div class="big">${esc(tx(c))}</div></div>`;
   if(c.kind==="vs") return `<div class="ccard"><div class="vs"><div class="${c.emph==="b"?"dim":""}">${ICONS[c.a.icon]||""}<div>${esc(tx(c.a))}</div></div><span class="x">vs</span><div class="${c.emph==="b"?"em":""}">${ICONS[c.b.icon]||""}<div>${esc(tx(c.b))}</div></div></div></div>`;
   if(c.kind==="list") return `<div class="ccard"><ul>${(c[lang]||c.en).map((x,i)=>`<li style="animation-delay:${i*0.35}s">${esc(x)}</li>`).join("")}</ul></div>`;
@@ -622,8 +692,8 @@ function fitStage(id){
   bub.style.minHeight=""; cb.style.minHeight=""; let hb=0, hc=0; const keepB=bub.innerHTML, keepC=cb.innerHTML, keepCls=bub.className;
   sc.beats.forEach(b=>{ const who=C.cast[b.who]; bub.className="bubble";
     bub.innerHTML=`<span class="nm">${esc(tx(who))}${who.bio?`<span class="bio">${esc(tx(who.bio))}</span>`:""}${b.t?`<span class="ts">${esc(b.s||sc.session||"")} ${esc(b.t)}</span>`:""}</span><span>${esc(tx(b.text))}</span>`;
-    hb=Math.max(hb,Math.ceil(bub.getBoundingClientRect().height));
-    if(b.card){ cb.innerHTML=cardHTML(b.card); hc=Math.max(hc,Math.ceil(cb.getBoundingClientRect().height)); } });
+    hb=Math.max(hb,bub.offsetHeight+1);
+    if(b.card){ cb.innerHTML=cardHTML(b.card); hc=Math.max(hc,cb.offsetHeight+1); } });
   bub.className=keepCls; bub.innerHTML=keepB; cb.innerHTML=keepC;
   if(hb) bub.style.minHeight=hb+"px"; if(hc) cb.style.minHeight=hc+"px";
 }
