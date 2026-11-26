@@ -1,4 +1,4 @@
-# Class recordings, transcripts, and audio files are never committed
+# Local-only files
 transcripts/
 *.srt
 *.opus
