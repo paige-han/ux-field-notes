@@ -16,7 +16,7 @@ with sync_playwright() as p:
 
     page.goto(BASE + "#home"); page.wait_for_load_state("networkidle")
     check("home renders curriculum list", page.locator(".modlist li").count() == 9)
-    check("summary sentence present", "32" in page.locator(".summary").inner_text())
+    check("summary sentence present", str(page.evaluate("window.COURSE.lessons.length")) in page.locator(".summary").inner_text())
     page.screenshot(path="/home/claude/out/e2e_home.png", full_page=True)
 
     # open a lesson from the list
@@ -39,7 +39,7 @@ with sync_playwright() as p:
     check("note saved", saved == "e2e note", str(saved))
     # done toggle + progress
     page.click("#doneBtn"); page.wait_for_timeout(200)
-    check("progress shows 1 done", "1/32" in page.locator("#progTxt").inner_text(), page.locator("#progTxt").inner_text())
+    check("progress shows 1 done", ("1/"+str(page.evaluate("window.COURSE.lessons.length"))) in page.locator("#progTxt").inner_text(), page.locator("#progTxt").inner_text())
     page.reload(); page.wait_for_timeout(500)
     check("note survives reload", page.input_value("#note") == "e2e note")
 
