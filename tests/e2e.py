@@ -84,6 +84,24 @@ with sync_playwright() as p:
     check("mobile menu opens", "open" in (m.locator("#side").get_attribute("class") or ""))
     m.screenshot(path="/home/claude/out/e2e_mobile.png")
 
+
+    # English is the default language; browser speech fallback works and stops on navigation
+    v = browser.new_page(viewport={"width": 1200, "height": 900})
+    v.add_init_script("""
+      window.__sp={speak:0,cancel:0};
+      const fake={speak(u){window.__sp.speak++; window.__last=u;}, cancel(){window.__sp.cancel++;}, getVoices(){return []}};
+      Object.defineProperty(window,'speechSynthesis',{value:fake,configurable:true});
+    """)
+    v.goto("http://localhost:8790/#l-persona"); v.wait_for_timeout(700)
+    check("default language is English", v.evaluate("document.documentElement.lang") == "en" and v.locator('.lang button[aria-pressed="true"]').inner_text().strip() == "EN")
+    check("sound toggle is available without hosted voices", v.locator("#scVoice").is_visible())
+    v.click("#scVoice"); v.wait_for_timeout(300)
+    check("turning sound on starts speaking", v.evaluate("window.__sp.speak") >= 1 and v.evaluate("window.__last.lang") == "en-US")
+    before = v.evaluate("window.__sp.cancel")
+    v.evaluate("location.hash='#l-journey'"); v.wait_for_timeout(500)
+    check("leaving a lesson stops its sound", v.evaluate("window.__sp.cancel") > before)
+    v.close()
+
     check("no console or page errors", not errors, "; ".join(errors)[:300])
     browser.close()
 

@@ -1,6 +1,6 @@
 // Course content. Edit or add lessons here; the page renders whatever is in COURSE.
 window.COURSE = {
-  version: "1.0",
+  version: "1.1",
   modules: [
     { id: "m1", no: "01", ko: "디자인의 기초", en: "Foundations" },
     { id: "m2", no: "02", ko: "비주얼 & 반응형", en: "Visual & Responsive" },
@@ -13,6 +13,9 @@ window.COURSE = {
     { id: "m9", no: "09", ko: "실무 & 커리어", en: "Practice & Career" }
   ],
   changelog: [
+    { date: "2026-11-25", version: "1.1",
+      ko: "기본 언어를 영어로 변경(한국어는 전환). 음성: 브라우저 음성으로도 재생되고, 다른 레슨으로 넘어가면 바로 멈춤. '음성 켜짐'을 누르면 재생이 시작됨. 홈의 색 막대를 숫자 표로 교체.",
+      en: "English is now the default language (Korean via the toggle). Sound: also plays through the browser's own voices, stops as soon as you leave a lesson, and 'Sound on' now starts playback. The coloured bar on Home is replaced by a plain tally." },
     { date: "2026-11-25", version: "1.0",
       ko: "1.0. 5월 30일·7월 4일 리뷰 반영: 그리드는 보이지 않는 뼈대(컬럼·로·모듈·거터·마진), 설명할 수 없으면 뺀다, 모서리는 숫자가 아니라 느낌을 맞춘다, 중립색을 더 쓴다, 작은 축하의 보상, 키오스크의 압박. 레슨 제목 2개를 장면 내용에 맞게 수정. 레슨 41개, 장면 40개.",
       en: "1.0. From the 30 May and 4 July reviews: a grid is an invisible skeleton (columns, rows, modules, gutters, margins); remove what you can't explain; match the feel of corners, not the number; use more neutrals; small celebrations reward; pressure at a kiosk. Two lesson titles now match their scenes. 41 lessons, 40 scenes." },

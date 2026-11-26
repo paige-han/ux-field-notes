@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -127,8 +127,12 @@ aside{overscroll-behavior:contain}
 
 .hero p{color:var(--ink-2);margin:0 0 10px}
 .shift{margin:6px 0 34px}
-.shift .track{display:flex;height:14px;border-radius:7px;overflow:hidden;border:1px solid var(--rule)}
-.shift .legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12.5px;color:var(--ink-2);margin-top:8px}
+.tally{display:flex;flex-wrap:wrap;margin:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.tally div{flex:1 1 140px;padding:14px 18px 14px 0;margin-right:18px;border-right:1px solid var(--rule)}
+.tally div:last-child{border-right:0;margin-right:0}
+.tally dt{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-2)}
+.tally dt .dot{width:6px;height:6px}
+.tally dd{margin:4px 0 0;font-size:28px;font-weight:700;line-height:1.1;color:var(--ink);font-variant-numeric:tabular-nums}
 .summary{font-size:18px;line-height:1.6;max-width:640px;margin:28px 0 20px;color:var(--ink)}
 .modlist{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
 .modlist a{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:16px;align-items:baseline;padding:16px 4px;border-bottom:1px solid var(--rule);text-decoration:none}
@@ -239,7 +243,7 @@ h3.sec{font-weight:700;font-size:22px;letter-spacing:-.02em;margin:44px 0 14px}
       <h1>Then <i>→</i> Now<br>UX Field Notes</h1>
       <div class="row">
         <div class="lang" role="group" aria-label="Language">
-          <button data-lang="ko">한국어</button><button data-lang="en">EN</button>
+          <button data-lang="en">EN</button><button data-lang="ko">한국어</button>
         </div>
         <span class="prog" id="progTxt"></span>
       </div>
@@ -283,7 +287,7 @@ const UI = {
       copyMd:"Copy my notes as Markdown",copied:"Copied",copyFail:"Couldn't copy",src:"Source",of:"Module",statusOf:"Status mix"}
 };
 const STATUSES=["holds","evolved","new","fading"];
-let lang = (()=>{try{return localStorage.getItem("tn-lang")||"ko"}catch(e){return "ko"}})();
+let lang = (()=>{try{return localStorage.getItem("tn-lang")||"en"}catch(e){return "en"}})();
 const t = k => UI[lang][k];
 const tx = o => (o && (o[lang] ?? o.en ?? o.ko)) || "";
 const esc = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -384,8 +388,7 @@ function renderHome(){
   h+=`<p class="summary">${lang==="ko"
       ? `레슨 ${L.length}개 중 ${d}개를 마쳤어요. 그때 배운 것 가운데 ${counts.holds}개는 여전히 유효하고, ${counts.evolved}개는 진화했고, ${counts.new}개는 새로 생겼어요.`
       : `${d} of ${L.length} lessons done. Of what I learned then, ${counts.holds} still hold, ${counts.evolved} have evolved and ${counts.new} are new.`}</p>`;
-  h+=`<div class="shift"><div class="eyebrow" style="margin-bottom:8px">${esc(t("shiftT"))}</div><div class="track">${STATUSES.map(s=>counts[s]?`<span class="s-${s}" style="flex:${counts[s]}" title="${esc(t(s))}: ${counts[s]}"></span>`:"").join("")}</div>
-    <div class="legend">${STATUSES.map(s=>`<span><span class="dot s-${s}" style="display:inline-block;margin-right:6px"></span>${esc(t(s))} ${counts[s]}</span>`).join("")}</div></div>`;
+  h+=`<div class="shift"><div class="eyebrow" style="margin-bottom:8px">${esc(t("shiftT"))}</div><dl class="tally">${STATUSES.filter(s=>counts[s]).map(s=>`<div><dt><span class="dot s-${s}" aria-hidden="true"></span>${esc(t(s))}</dt><dd>${counts[s]}</dd></div>`).join("")}</dl></div>`;
   h+=`<h3 class="sec">${esc(t("modulesT"))}</h3><ol class="modlist">`;
   M.forEach(m=>{ const ms=L.filter(l=>l.m===m.id); const first=ms.find(l=>!ls(l.id).done)||ms[0]; const dn=ms.filter(l=>ls(l.id).done).length;
     h+=`<li><a href="#l-${first.id}"><span class="no">${m.no}</span><span class="mt"><b>${esc(tx(m))}</b>${m.isNew?` <span class="newtag">${lang==="ko"?"새 모듈":"New"}</span>`:""}<span class="ml">${ms.map(l=>esc(tx(l.title))).join(", ")}</span></span><span class="mp">${dn}/${ms.length}</span></a></li>`; });
@@ -577,18 +580,32 @@ function showBeat(id,i){
 }
 /* voices via the tts capability; text stays on screen, voice is opt-in */
 const VO={t:null,on:false,unsub:[]};
+function voLine({id}){ if(!SC.voiced||!id||!route.id) return; const j=+id.slice(1); if(C.scenes[route.id]) showBeat(route.id,j); }
+function voState({state,reason}){ if(state==="idle"&&SC.voiced){ SC.voiced=false; if(reason!=="replaced"){ SC.playing=false; setPlayLabel(); const sg=document.getElementById("segs"); if(sg) sg.classList.add("paused"); }
+    if(reason==="not_granted"||reason==="unavailable"){ VO.t=WS; if(!WS){ VO.on=false; const b=document.getElementById("scVoice"); if(b) b.hidden=true; } } } }
+/* fallback: the browser's own speech engine, used when the hosted voices are not there */
+const WS=("speechSynthesis" in window && "SpeechSynthesisUtterance" in window) ? {tk:0,
+  pitch:{buttery:.8,rounded:.9,glassy:1.1,airy:1.25},
+  pick(l){ const vs=speechSynthesis.getVoices(), p=l==="ko"?"ko":"en"; return vs.find(v=>v.lang&&v.lang.toLowerCase().startsWith(p)&&v.localService)||vs.find(v=>v.lang&&v.lang.toLowerCase().startsWith(p))||null; },
+  speak(lines){ const tk=++this.tk; speechSynthesis.cancel(); let k=0;
+    const next=()=>{ if(tk!==this.tk) return; if(k>=lines.length){ voState({state:"idle",reason:"done"}); return; }
+      const ln=lines[k++]; voLine({id:ln.id}); const u=new SpeechSynthesisUtterance(ln.text); u.lang=ln.language==="ko"?"ko-KR":"en-US";
+      const v=this.pick(ln.language); if(v) u.voice=v; u.rate=Math.min(1.3,Math.max(.8,ln.rate||1)); u.pitch=this.pitch[ln.voice]||1;
+      u.onend=next; u.onerror=()=>{ if(tk===this.tk) next(); }; speechSynthesis.speak(u); };
+    next(); return Promise.resolve(); },
+  stop(){ this.tk++; speechSynthesis.cancel(); return Promise.resolve(); } } : null;
+if(WS){ VO.t=WS; try{ speechSynthesis.getVoices(); }catch(e){} }
 (async()=>{ try{ if(!window.claude||!claude.use) return; const t=await claude.use("tts"); if(!t) return; VO.t=t;
-  t.onLine(({id})=>{ if(!SC.voiced||!id||!route.id) return; const j=+id.slice(1); if(C.scenes[route.id]) showBeat(route.id,j); });
-  t.onState(({state,reason})=>{ if(state==="idle"&&SC.voiced){ SC.voiced=false; if(reason!=="replaced"){ SC.playing=false; setPlayLabel(); const sg=document.getElementById("segs"); if(sg) sg.classList.add("paused"); }
-      if(reason==="not_granted"||reason==="unavailable"){ VO.t=null; VO.on=false; const b=document.getElementById("scVoice"); if(b) b.hidden=true; } } });
+  t.onLine(voLine); t.onState(voState);
   const b=document.getElementById("scVoice"); if(b) b.hidden=false; }catch(e){} })();
+window.addEventListener("pagehide",()=>{ try{ if(VO.t) VO.t.stop(); }catch(e){} });
 function speakFrom(id,i){
   const sc=C.scenes[id]; const lines=sc.beats.slice(i).map((b,k)=>{ const c=C.cast[b.who]||{}; return {text:tx(b.text), voice:c.voice, rate:c.rate, language:lang==="ko"?"ko":"en", id:"b"+(i+k)}; });
   SC.voiced=true; clearTimeout(SC.timer); showBeat(id,i);
   VO.t.speak(lines).catch(e=>{ if(e&&e.code==="no_gesture"){ SC.voiced=false; SC.playing=false; setPlayLabel(); }
-    else if(e&&(e.code==="not_granted"||e.code==="unavailable")){ VO.on=false; VO.t=null; const b=document.getElementById("scVoice"); if(b) b.hidden=true; SC.voiced=false; showBeat(id,SC.i); } });
+    else if(e&&(e.code==="not_granted"||e.code==="unavailable")){ SC.voiced=false; if(WS&&VO.t!==WS){ VO.t=WS; speakFrom(id,SC.i); } else { VO.on=false; VO.t=null; const b=document.getElementById("scVoice"); if(b) b.hidden=true; showBeat(id,SC.i); } } });
 }
-function stopVoice(){ if(VO.t&&SC.voiced){ SC.voiced=false; VO.t.stop().catch(()=>{}); } }
+function stopVoice(){ SC.voiced=false; if(VO.t){ try{ const r=VO.t.stop(); if(r&&r.catch) r.catch(()=>{}); }catch(e){} } if(WS&&VO.t!==WS){ try{ WS.stop(); }catch(e){} } }
 const ICO={play:'<svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z" fill="currentColor"/></svg>',
   pause:'<svg width="12" height="12" viewBox="0 0 12 12"><rect x="2" y="1" width="3" height="10" rx="1" fill="currentColor"/><rect x="7" y="1" width="3" height="10" rx="1" fill="currentColor"/></svg>',
   on:'<svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 6h3l4-3v10l-4-3H2z" fill="currentColor"/><path d="M11 5.5a3.5 3.5 0 010 5M12.8 3.5a6 6 0 010 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
@@ -612,7 +629,7 @@ function bindScene(id){
   document.getElementById("scPrev").onclick=()=>{ if(SC.i>0) go(SC.i-1); };
   document.querySelectorAll("#segs .seg").forEach(s=>s.onclick=()=>go(+s.dataset.seg));
   const vb=document.getElementById("scVoice"); setVoiceLabel(); if(VO.t){ vb.hidden=false; }
-  vb.onclick=()=>{ VO.on=!VO.on; setVoiceLabel(); if(!VO.on){ stopVoice(); if(SC.playing) showBeat(id,SC.i); } else if(SC.playing){ speakFrom(id,SC.i); } };
+  vb.onclick=()=>{ VO.on=!VO.on; setVoiceLabel(); if(!VO.on){ stopVoice(); if(SC.playing) showBeat(id,SC.i); } else { if(!SC.playing){ SC.playing=true; if(SC.i>=n-1) SC.i=0; setPlayLabel(); } speakFrom(id,SC.i); } };
 }
 
 /* ---------- journal ---------- */
