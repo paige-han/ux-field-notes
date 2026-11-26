@@ -1,11 +1,6 @@
 # Then → Now: UX Field Notes
 
-Personal study notes, rebuilt from a UX course I took some time ago.
-They set what was taught back then (Then) beside the view from the age of AI and agents (Now), as a textbook that keeps being revised.
-
-- 32 lessons in 9 modules (switchable between Korean and English)
-- Each lesson has: Then/Now summaries, a class scene, practice, a review quiz, my notes, and progress
-- 31 class scenes: course material retold with fictional characters and rewritten dialogue
+UX notes.
 
 ## Running it
 
