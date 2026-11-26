@@ -1,4 +1,4 @@
-# 수업 녹화본·받아쓰기·소리 파일은 저장소에 올리지 않는다
+# Class recordings, transcripts, and audio files are never committed
 transcripts/
 *.srt
 *.opus
