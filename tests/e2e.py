@@ -102,6 +102,25 @@ with sync_playwright() as p:
     check("leaving a lesson stops its sound", v.evaluate("window.__sp.cancel") > before)
     v.close()
 
+
+    # the stage keeps one height through a whole scene
+    f = browser.new_page(viewport={"width": 1200, "height": 900})
+    f.goto("http://localhost:8790/#l-wireframe-fidelity"); f.wait_for_timeout(900)
+    hs = set()
+    for _ in range(40):
+        hs.add(f.evaluate("document.querySelector('.stage').offsetHeight"))
+        if not f.is_enabled("#scNext"): break
+        f.click("#scNext"); f.wait_for_timeout(60)
+    check("stage height stays fixed across beats", len(hs) == 1, str(sorted(hs)))
+    f.set_viewport_size({"width": 390, "height": 800}); f.wait_for_timeout(500)
+    hm = set()
+    for _ in range(40):
+        hm.add(f.evaluate("document.querySelector('.stage').offsetHeight"))
+        if not f.is_enabled("#scPrev"): break
+        f.click("#scPrev"); f.wait_for_timeout(60)
+    check("stage height stays fixed on mobile", len(hm) == 1, str(sorted(hm)))
+    f.close()
+
     check("no console or page errors", not errors, "; ".join(errors)[:300])
     browser.close()
 

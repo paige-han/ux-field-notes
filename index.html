@@ -616,9 +616,22 @@ function setPlayLabel(){ const b=document.getElementById("scPlay"); if(!b) retur
 function setVoiceLabel(){ const b=document.getElementById("scVoice"); if(!b) return; b.setAttribute("aria-pressed",VO.on);
   b.querySelector(".vi").innerHTML = VO.on?ICO.on:ICO.off;
   b.querySelector(".vl").textContent = VO.on ? (lang==="ko"?"음성 켜짐":"Sound on") : (lang==="ko"?"음성 꺼짐":"Sound off"); }
+/* keep the stage one height for the whole scene: size the bubble and the card area to their tallest content */
+function fitStage(id){
+  const sc=C.scenes&&C.scenes[id], bub=document.getElementById("bubble"), cb=document.getElementById("cardbox"); if(!sc||!bub||!cb) return;
+  bub.style.minHeight=""; cb.style.minHeight=""; let hb=0, hc=0; const keepB=bub.innerHTML, keepC=cb.innerHTML, keepCls=bub.className;
+  sc.beats.forEach(b=>{ const who=C.cast[b.who]; bub.className="bubble";
+    bub.innerHTML=`<span class="nm">${esc(tx(who))}${who.bio?`<span class="bio">${esc(tx(who.bio))}</span>`:""}${b.t?`<span class="ts">${esc(b.s||sc.session||"")} ${esc(b.t)}</span>`:""}</span><span>${esc(tx(b.text))}</span>`;
+    hb=Math.max(hb,Math.ceil(bub.getBoundingClientRect().height));
+    if(b.card){ cb.innerHTML=cardHTML(b.card); hc=Math.max(hc,Math.ceil(cb.getBoundingClientRect().height)); } });
+  bub.className=keepCls; bub.innerHTML=keepB; cb.innerHTML=keepC;
+  if(hb) bub.style.minHeight=hb+"px"; if(hc) cb.style.minHeight=hc+"px";
+}
+let fitT=0; window.addEventListener("resize",()=>{ clearTimeout(fitT); fitT=setTimeout(()=>{ if(route.view==="lesson"&&!SC.playing) { fitStage(route.id); } },200); });
 function bindScene(id){
   if(!(C.scenes&&C.scenes[id])) return;
   clearTimeout(SC.timer); SC.playing=false; SC.lastCard=undefined; const n=C.scenes[id].beats.length;
+  fitStage(id); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{ if(route.id===id&&!SC.playing) fitStage(id); });
   showBeat(id,0); setPlayLabel();
   const go=j=>{ if(SC.playing&&VO.on&&VO.t) speakFrom(id,j); else showBeat(id,j); };
   document.getElementById("scPlay").onclick=()=>{

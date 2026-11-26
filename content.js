@@ -1,6 +1,6 @@
 // Course content. Edit or add lessons here; the page renders whatever is in COURSE.
 window.COURSE = {
-  version: "1.1",
+  version: "1.2",
   modules: [
     { id: "m1", no: "01", ko: "디자인의 기초", en: "Foundations" },
     { id: "m2", no: "02", ko: "비주얼 & 반응형", en: "Visual & Responsive" },
@@ -13,6 +13,9 @@ window.COURSE = {
     { id: "m9", no: "09", ko: "실무 & 커리어", en: "Practice & Career" }
   ],
   changelog: [
+    { date: "2026-11-25", version: "1.2",
+      ko: "수업 장면의 높이를 고정: 말풍선과 카드 길이가 달라져도 장면 영역이 움직이지 않음.",
+      en: "Class scenes keep one height: the stage no longer shifts as speech bubbles and cards change length." },
     { date: "2026-11-25", version: "1.1",
       ko: "기본 언어를 영어로 변경(한국어는 전환). 음성: 브라우저 음성으로도 재생되고, 다른 레슨으로 넘어가면 바로 멈춤. '음성 켜짐'을 누르면 재생이 시작됨. 홈의 색 막대를 숫자 표로 교체.",
       en: "English is now the default language (Korean via the toggle). Sound: also plays through the browser's own voices, stops as soon as you leave a lesson, and 'Sound on' now starts playback. The coloured bar on Home is replaced by a plain tally." },
