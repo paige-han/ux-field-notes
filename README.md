@@ -44,8 +44,3 @@ python3 -m http.server 8790 &
 python3 tests/e2e.py
 ```
 
-## Ground rules
-
-- No real names, faces, voices, or personal stories of students or instructors. The characters are fictional composites of several people.
-- Recordings, transcripts, and audio files are never committed to the repository (`.gitignore`).
-- No school or company names.
