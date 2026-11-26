@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#F4F4F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131219" media="(prefers-color-scheme: dark)">
+<meta name="description" content="A personal UX textbook that sets what I learned then beside how I see it now, with notes, quizzes and class scenes.">
+<title>Then → Now: UX Field Notes</title>
+<link rel="preload" href="fonts/PretendardVariable.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* Hallmark · checked: 2026-11-25 · genre: editorial (inferred) · shape: app screen
+ * floor: see sweep · fixed: 3, 7a, 9, 10, 10a, 11, 29, 34, 38iii, 39a, 40, 48, 54, 63, 75, F3, F19, F23, F24
+ * built: the project · redesign: polish · v2.0.0 */
+/* Hallmark · dismissed 41 · --stage-bg is the dark class-scene stage, whose text is set from --stage-ink, never from --ink */
+@font-face{font-family:"Pretendard Variable";src:url("fonts/PretendardVariable.woff2") format("woff2-variations");font-weight:45 920;font-style:normal;font-display:swap}
+:root{
+  --paper:#F4F4F7; --paper-2:#EBEAF0; --card:#FFFFFF; --ink:#1B1A24; --ink-2:#4A4858; --ink-3:#6A6878;
+  --rule:#DEDDE6; --field-line:#8E8C9C; --on-accent:#FFFFFF; --wrong:#B3362A; --shadow:rgba(27,26,36,.18);
+  --stage-bg:#121118; --stage-ink:#EDEBF5; --stage-ink-2:#B9B5C9; --stage-ink-3:#9C97AB; --stage-on:#FFFDF8; --bubble-bg:#1D1B26; --bubble-line:#34313F; --bubble-now-bg:#22234A; --bubble-now-line:#5E68D8; --then:#A35F17; --then-bg:#F6EBDD; --now:#5B3FD6; --now-bg:#ECE8FC;
+  --holds:#2E7A4B; --evolved:#A8661A; --new:#5B3FD6; --fading:#8E8C9C;
+  --background:var(--paper); --foreground:var(--ink); --muted:var(--paper-2); --muted-foreground:var(--ink-3); --border:var(--rule); --input:var(--field-line); --ring:var(--now); --primary:var(--ink); --primary-foreground:var(--on-accent); --radius:10px;
+  color-scheme:light dark;
+  --sans:"Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Segoe UI", system-ui, sans-serif; --serif:var(--sans); --mono:var(--sans);
+}
+@media (prefers-color-scheme: dark){
+  :root{ --paper:#131219; --paper-2:#191822; --card:#1C1B24; --ink:#EEEDF4; --ink-2:#C2C0CE; --ink-3:#9C9AAC; --field-line:#6E6C80; --on-accent:#131219;
+    --rule:#2E2C3A; --then:#E0A45E; --then-bg:#2A2117; --now:#A594FF; --now-bg:#24203F;
+    --holds:#5DBE84; --evolved:#E0A848; --new:#A594FF; --fading:#7E7C8E; }
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow-x:clip}
+h1,h2,h3{text-wrap:balance}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;letter-spacing:-.005em;-webkit-font-smoothing:antialiased;font-feature-settings:"tnum" 1;word-break:keep-all}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit}
+.app{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+/* sidebar */
+aside{border-right:1px solid var(--rule);background:var(--paper-2);position:sticky;top:0;height:100vh;overflow:auto;display:flex;flex-direction:column}
+.brand{padding:22px 22px 14px;border-bottom:1px solid var(--rule)}
+.brand .kicker{font-size:12px;font-weight:400;color:var(--ink-3)}
+.brand h1{font-weight:700;font-size:22px;line-height:1.25;letter-spacing:-.02em;margin:4px 0 0}
+.brand h1 i{font-style:normal}
+.brand .row{display:flex;align-items:center;justify-content:space-between;margin-top:14px;gap:10px}
+.lang{display:inline-flex;border:1px solid var(--rule);border-radius:999px;padding:2px;background:var(--card)}
+.lang button{border:0;background:none;min-height:32px;padding:0 12px;border-radius:999px;font-size:12px;font-weight:400;color:var(--ink-3)}
+.lang button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.prog{font-size:12px;color:var(--ink-2)}
+.bar{height:4px;background:var(--rule);border-radius:4px;overflow:hidden;margin-top:8px}
+.bar>span{display:block;height:100%;width:100%;background:var(--now);transform-origin:left;transition:transform .4s}
+nav{padding:10px 10px 30px;flex:1}
+.navtop{display:flex;gap:6px;padding:4px 6px 10px}
+.navtop a{flex:1;text-align:center;text-decoration:none;border:1px solid var(--rule);border-radius:8px;padding:6px 0;font-size:13px;background:var(--card)}
+.navtop a.on{border-color:var(--ink);font-weight:600}
+.mod{margin-top:8px}
+.mod>button{width:100%;display:flex;align-items:baseline;gap:10px;border:0;background:none;padding:8px 10px;text-align:left;border-radius:8px}
+.mod>button:hover{background:var(--card)}
+.mod .no{font-size:12px;font-weight:400;color:var(--ink-3)}
+.mod .mt{font-weight:600;font-size:13.5px;flex:1}
+.mod .mc{font-size:12px;color:var(--ink-3)}
+.newtag{font-size:11.5px;font-weight:600;color:var(--now);border:1px solid var(--now);border-radius:4px;padding:0 4px;margin-left:4px}
+.lessons{list-style:none;margin:0;padding:0 0 4px 0}
+.mod.collapsed .lessons{display:none}
+.lessons a{display:flex;align-items:center;gap:10px;padding:6px 10px 6px 30px;text-decoration:none;font-size:13.5px;color:var(--ink-2);border-radius:8px}
+.lessons a:hover{background:var(--card);color:var(--ink)}
+.lessons a.on{background:var(--card);color:var(--ink);font-weight:600;box-shadow:inset 2px 0 0 var(--now)}
+.dot{width:8px;height:8px;border-radius:50%;flex:none}
+.chk{margin-left:auto;font-size:12px;color:var(--holds)}
+.s-holds{background:var(--holds)} .s-evolved{background:var(--evolved)} .s-new{background:var(--new)} .s-fading{background:var(--fading)}
+.sync{padding:12px 22px;border-top:1px solid var(--rule);font-size:12px;color:var(--ink-3)}
+/* main */
+main{min-width:0}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 48px 120px}
+.mobilebar{display:none}
+.eyebrow{font-size:13px;font-weight:400;color:var(--ink-3)}
+h2.title{font-weight:700;font-size:38px;line-height:1.2;margin:8px 0 14px;letter-spacing:-.025em}
+.src{display:inline-flex;gap:8px;align-items:center;font-size:13px;color:var(--ink-2);border:1px dashed var(--rule);border-radius:999px;padding:3px 12px}
+.statusrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:22px 0 28px}
+.statusrow .lbl{font-size:13px;color:var(--ink-3);margin-right:4px}
+.pill{border:1px solid var(--rule);background:var(--card);border-radius:999px;padding:4px 12px;font-size:13px;display:inline-flex;align-items:center;gap:7px}
+.pill[aria-pressed="true"]{border-color:currentColor;font-weight:600}
+.pill.holds[aria-pressed="true"]{color:var(--holds)} .pill.evolved[aria-pressed="true"]{color:var(--evolved)} .pill.new[aria-pressed="true"]{color:var(--new)} .pill.fading[aria-pressed="true"]{color:var(--fading)}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule);border-radius:14px;overflow:hidden;background:var(--card)}
+.side{padding:26px 28px 28px;position:relative}
+.side+.side{border-left:1px solid var(--rule)}
+.side .yr{font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1;margin:0 0 6px}
+.side.then .yr{color:var(--then)} .side.now .yr{color:var(--now)}
+.side .cap{font-size:13px;font-weight:600;color:var(--ink-2);margin-bottom:12px}
+.side ul{margin:0;padding:0;list-style:none}
+.side li{padding:10px 0;border-top:1px solid var(--rule);font-size:14.5px}
+.side li:first-child{border-top:0}
+.arrow{position:absolute;left:-15px;top:34px;width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:14px;z-index:2}
+section.block{margin-top:34px}
+section.block h3{font-weight:700;font-size:20px;letter-spacing:-.02em;margin:0 0 12px;display:flex;align-items:baseline;gap:12px}
+.task{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:16px 20px;font-size:15px}
+.quiz{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:20px}
+.quiz .q{font-weight:600;margin-bottom:12px}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;border:1px solid var(--rule);background:var(--paper);border-radius:10px;padding:10px 14px;display:flex;gap:10px}
+.opt .k{font-weight:600;color:var(--ink-3)}
+.opt.right{border-color:var(--holds);background:color-mix(in srgb,var(--holds) 10%,var(--paper))}
+.opt.wrong{border-color:var(--wrong);background:color-mix(in srgb,var(--wrong) 8%,var(--paper))}
+.opt:disabled{cursor:default}
+.why{margin-top:12px;font-size:14px;color:var(--ink-2)}
+.why b{color:var(--ink)}
+textarea{width:100%;min-height:180px;resize:vertical;border:1px solid var(--field-line);background:var(--card);color:var(--ink);border-radius:12px;padding:13px 18px;font:inherit;line-height:26px}
+textarea:focus-visible,input:focus-visible,.pill:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--ring);outline-offset:2px}
+textarea:focus,input:focus{border-color:var(--ring)}
+button,a,.pill,.opt{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+h2,h3{scroll-margin-top:24px}
+.skip{position:absolute;left:12px;top:-48px;z-index:50;background:var(--primary);color:var(--primary-foreground);padding:8px 14px;border-radius:8px;text-decoration:none}
+.skip:focus-visible{top:12px}
+#view:focus{outline:none}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media (hover:hover){.btn:hover,.pill:hover,.opt:not(:disabled):hover,.navtop a:hover,.controls button:not(:disabled):hover{border-color:var(--ink-3)}.btn.primary:hover{background:var(--ink-2)}}
+aside{overscroll-behavior:contain}
+.saved{font-size:12px;color:var(--ink-3);margin-top:6px;min-height:16px}
+.footer-nav{display:flex;justify-content:space-between;gap:12px;margin-top:44px;padding-top:22px;border-top:1px solid var(--rule)}
+.btn{border:1px solid var(--rule);background:var(--card);border-radius:10px;padding:10px 16px;font-size:14px;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn.primary{background:var(--ink);color:var(--on-accent);border-color:var(--ink)}
+.btn.done{background:var(--card);border-color:var(--holds);color:var(--holds)}
+.btn:disabled{background:var(--paper-2);color:var(--ink-3);border-color:var(--rule);cursor:not-allowed}
+.btn:active,.pill:active,.opt:active,.controls button:active,.lang button:active,.navtop a:active{transform:scale(.98)}
+/* home */
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;padding-bottom:30px;border-bottom:1px solid var(--rule)}
+.hero h2{font-weight:700;font-size:56px;line-height:1.05;margin:10px 0 0;letter-spacing:-.04em}
+
+.hero p{color:var(--ink-2);margin:0 0 10px}
+.shift{margin:6px 0 34px}
+.shift .track{display:flex;height:14px;border-radius:7px;overflow:hidden;border:1px solid var(--rule)}
+.shift .legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12.5px;color:var(--ink-2);margin-top:8px}
+.summary{font-size:18px;line-height:1.6;max-width:640px;margin:28px 0 20px;color:var(--ink)}
+.modlist{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
+.modlist a{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:16px;align-items:baseline;padding:16px 4px;border-bottom:1px solid var(--rule);text-decoration:none}
+.modlist a:hover{background:var(--card)}
+.modlist .no{font-size:15px;color:var(--ink-3)}
+.modlist b{font-size:18px;font-weight:700;letter-spacing:-.02em}
+.modlist .ml{display:block;font-size:14px;color:var(--ink-2);margin-top:4px}
+.modlist .mp{font-size:14px;color:var(--ink-3)}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+.how div{border-top:2px solid var(--ink);padding-top:10px;font-size:14px;color:var(--ink-2)}
+.how b{display:block;color:var(--ink);font-size:15px;margin-bottom:4px}
+h3.sec{font-weight:700;font-size:22px;letter-spacing:-.02em;margin:44px 0 14px}
+/* log */
+.addlog{display:flex;gap:10px;margin:18px 0 28px}
+.addlog .btn{white-space:nowrap}
+.addlog input{flex:1;min-width:0;border:1px solid var(--field-line);background:var(--card);color:var(--ink);border-radius:10px;padding:10px 14px;font:inherit}
+.timeline{list-style:none;margin:0;padding:0;border-left:1px solid var(--rule);margin-left:8px}
+.timeline li{position:relative;padding:0 0 22px 26px}
+.timeline li::before{content:"";position:absolute;left:-6px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--paper);border:2px solid var(--ink-3)}
+.timeline li.ed::before{border-color:var(--now);background:var(--now)}
+.timeline li.st::before{border-color:var(--evolved)}
+.timeline li.dn::before{border-color:var(--holds)}
+.timeline .d{font-size:12px;color:var(--ink-3)}
+.timeline .x{font-size:14.5px}
+.timeline .tag{font-size:11px;font-weight:400;border:1px solid var(--rule);border-radius:4px;padding:0 5px;margin-right:6px;color:var(--ink-2)}
+.empty{color:var(--ink-3);font-size:14px;padding:12px 0}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:8px 16px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+
+/* scene player */
+.scene{border:1px solid var(--rule);border-radius:16px;background:var(--card);overflow:hidden;margin:0 0 28px}
+.scene-head{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--rule);font-size:13px}
+.scene-head b{font-weight:700;white-space:nowrap}.scene-head .draft{white-space:nowrap}
+.scene-head .src{border:0;padding:0;color:var(--ink-3);font-size:12px}
+.draft{font-size:11px;font-weight:600;color:var(--evolved);border:1px solid currentColor;border-radius:4px;padding:0 5px}
+.stage{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:26px 26px 20px;min-height:300px;color:var(--stage-ink);
+  background:var(--stage-bg)}
+.talk{display:flex;flex-direction:column;justify-content:flex-end;gap:14px;min-width:0}
+.cast{grid-column:1/-1;display:flex;gap:12px;align-items:flex-end;flex-wrap:nowrap;padding-right:120px}
+.cast .who[data-who="now"]{margin-left:8px;padding-left:16px;border-left:1px solid var(--bubble-line)}
+.who{display:flex;flex-direction:column;align-items:center;gap:6px;opacity:.42;filter:saturate(.55);transition:opacity .3s,filter .3s,transform .3s;font-size:12px;color:var(--stage-ink-2)}
+.who.on{opacity:1;filter:none;transform:translateY(-6px);color:var(--stage-on);font-weight:600}
+.who .ani{overflow:visible}
+.who .halo{opacity:.25;transition:opacity .3s}
+.who.on .halo{opacity:.75}
+.who.on .ani{animation:bob 1.1s ease-in-out infinite}
+.spark{animation:tw 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.orbit{animation:orb 3s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes orb{50%{opacity:.55;transform:rotate(4deg)}}
+@keyframes bob{50%{transform:translateY(-4px) scale(1.02,.98)}}
+@keyframes tw{50%{opacity:.3;transform:scale(.6)}}
+.bubble{position:relative;background:var(--bubble-bg);border:1px solid var(--bubble-line);border-radius:14px;padding:14px 16px;font-size:16px;line-height:1.6;min-height:84px;color:var(--stage-ink)}
+.bubble .nm{display:flex;gap:8px;font-size:12px;font-weight:600;color:var(--stage-ink-2);margin-bottom:2px}
+.bubble .ts{margin-left:auto;font-weight:400;color:var(--stage-ink-3)}
+.bubble .bio{font-weight:400;color:var(--stage-ink-3)}
+.bubble.now{border-color:var(--bubble-now-line);background:var(--bubble-now-bg)}
+.cardbox{display:grid;place-items:center;min-width:0}
+.ccard{width:100%;max-width:380px;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:14px;padding:18px;animation:pop .45s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.96)}}
+.ccard .big{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1.15;text-align:center;padding:16px 0}
+.ccard .vs{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;text-align:center;font-size:13.5px;font-weight:600}
+.ccard .vs .x{font-size:12px;color:var(--ink-3)}
+.ccard .vs .dim{opacity:.45}
+.ccard .vs .em{color:var(--now)}
+.ccard ul{margin:0;padding-left:20px}
+.ccard ul li{padding:4px 0;animation:pop .35s both}
+.ccard .q{font-size:18px;font-weight:600;line-height:1.45}
+.ccard .sh{display:grid;gap:8px}
+.ccard .sh div{border-radius:10px;padding:10px 12px;font-weight:600}
+.ccard .sh .a{background:var(--then-bg);color:var(--then)} .ccard .sh .b{background:var(--now-bg);color:var(--now)}
+.ccard .sh small{display:block;font-size:11px;font-weight:400;opacity:.8}
+.controls{display:flex;align-items:center;gap:10px;padding:10px 16px;border-top:1px solid var(--rule)}
+.controls button{border:1px solid var(--rule);background:var(--paper);border-radius:8px;width:34px;height:30px;display:grid;place-items:center;font-size:13px}
+.vtoggle{position:absolute;top:12px;right:12px;z-index:2;display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:0 12px;border-radius:999px;border:1px solid var(--bubble-line);background:var(--bubble-bg);color:var(--stage-ink-2);font-size:13px}
+.vtoggle[aria-pressed="true"]{color:var(--stage-on);border-color:var(--bubble-now-line)}
+.vtoggle .vi,.controls .pi{display:inline-flex}
+.controls button.step:disabled{opacity:1;color:var(--rule);cursor:not-allowed;background:var(--card)}
+.controls button.play{width:auto;min-width:96px;gap:8px;display:inline-flex;align-items:center;justify-content:center;padding:0 14px;background:var(--ink);color:var(--paper);border-color:var(--ink);font-weight:600}
+.segs{display:flex;gap:3px;flex:1}
+.segs .seg{flex:1;min-width:0;height:24px;padding:0;border:0;background:none;display:flex;align-items:center;cursor:pointer}
+.segs .seg i{display:block;width:100%;height:4px;border-radius:2px;background:var(--rule);position:relative;overflow:hidden}
+.segs .seg.past i{background:var(--ink-3)}
+.segs .seg.cur i::after{content:"";position:absolute;inset:0;background:var(--now);transform-origin:left;animation:fill var(--d,4s) linear forwards}
+.segs.paused .seg.cur i::after{animation-play-state:paused}
+@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.note-fic{font-size:11.5px;color:var(--ink-3);padding:0 16px 12px}
+@media (max-width:900px){.stage{grid-template-columns:1fr;padding:56px 16px 16px}.cardbox{order:-1}.cast{gap:6px;padding-right:0;flex-wrap:nowrap}.cast .who[data-who="now"]{margin-left:2px;padding-left:6px}.who .ani{width:38px;height:44px}.who span{font-size:10.5px;white-space:nowrap}.who span{font-size:10.5px}}
+@media (prefers-reduced-motion:reduce){.ccard,.ccard ol li,.who.on .ani,.spark,.orbit{animation:none}.who.on{transform:none}}
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  aside{position:fixed;inset:0 auto 0 0;width:300px;z-index:20;transform:translateX(-100%);transition:transform .2s;box-shadow:0 0 40px var(--shadow)}
+  aside.open{transform:none}
+  .mobilebar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--rule);background:var(--paper)}
+  .wrap{padding:26px 20px 100px}
+  .compare{grid-template-columns:1fr} .side+.side{border-left:0;border-top:1px solid var(--rule)}
+  .arrow{left:28px;top:-15px;transform:rotate(90deg)}
+  .hero{grid-template-columns:1fr} .hero h2{font-size:44px}
+  h2.title{font-size:30px}
+  .how{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#view">본문으로 건너뛰기</a>
+<div class="app">
+  <aside id="side">
+    <div class="brand">
+      <h1>Then <i>→</i> Now<br>UX Field Notes</h1>
+      <div class="row">
+        <div class="lang" role="group" aria-label="Language">
+          <button data-lang="ko">한국어</button><button data-lang="en">EN</button>
+        </div>
+        <span class="prog" id="progTxt"></span>
+      </div>
+      <div class="bar"><span id="progBar" style="transform:scaleX(0)"></span></div>
+    </div>
+    <nav id="nav"></nav>
+    <div class="sync" id="sync"></div>
+  </aside>
+  <main>
+    <div class="mobilebar"><button class="btn" id="menuBtn" aria-label="메뉴 열기" aria-expanded="false" aria-controls="side">☰</button><span class="eyebrow">Then → Now</span><span></span></div>
+    <div class="wrap" id="view" tabindex="-1"></div>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="content.js"></script>
+<script>
+(function(){
+const C = window.COURSE;
+const L = C.lessons, M = C.modules;
+const byId = Object.fromEntries(L.map(l=>[l.id,l]));
+const UI = {
+  ko:{home:"홈",log:"학습 기록",progress:(d,t)=>`${d}/${t} 완료`,status:"지금의 판단",holds:"여전히 유효",evolved:"진화함",new:"새로 등장",fading:"비중 감소",
+      then:"그때 배운 것",now:"지금 다시 본 것",practice:"실습 과제",quiz:"복습 퀴즈",notes:"내 노트 · 회고",notesPh:"실무 사례, 다르게 생각하게 된 점, 질문을 적어두세요…",
+      saved:"저장됨",saving:"저장 중…",local:"이 브라우저에만 저장 중",cloud:"계정에 동기화됨",markDone:"레슨 완료로 표시",isDone:"완료함 ✓",prev:"이전",next:"다음",
+      correct:"정답",wrong:"아쉬워요",retry:"다시 풀기",lessons:"레슨",completed:"완료",start:"이어서 학습하기",begin:"첫 레슨 시작",
+      heroP:"예전에 배운 UX를 AI와 에이전트 시대의 실무 관점으로 다시 읽는 살아있는 교재. 레슨마다 그때와 지금을 나란히 놓고, 내 판단과 기록을 쌓아갑니다.",
+      shiftT:"그때 → 지금, 무엇이 바뀌었나",modulesT:"커리큘럼",howT:"이 교재 쓰는 법",
+      how:[["비교하며 읽기","왼쪽은 그때 배운 것, 오른쪽은 지금의 관점. 차이 자체가 배울 거리입니다."],["내 판단 남기기","상태를 직접 바꾸고 노트를 쓰세요. 변경은 학습 기록에 자동으로 쌓입니다."],["계속 키우기","새 깨달음이 생기면 레슨을 추가하거나 수정해 판(edition)을 올리세요."]],
+      logT:"학습 기록",logP:"교재의 판 변경과, 내가 판단을 바꾸거나 레슨을 마친 순간이 쌓이는 타임라인입니다.",addPh:"오늘 바뀐 생각이나 배운 것을 한 줄로…",add:"기록 추가",
+      edition:"교재 개정",stChange:"판단 변경",done:"레슨 완료",entry:"메모",noEntries:"아직 기록이 없어요. 레슨을 마치거나 상태를 바꾸면 여기에 쌓입니다.",
+      copyMd:"내 노트를 마크다운으로 복사",copied:"복사했어요",copyFail:"복사할 수 없어요",src:"출처",of:"모듈",statusOf:"상태 분포"},
+  en:{home:"Home",log:"Journal",progress:(d,t)=>`${d}/${t} done`,status:"My current take",holds:"Still holds",evolved:"Evolved",new:"New (AI era)",fading:"Fading",
+      then:"What I learned then",now:"How I see it now",practice:"Practice",quiz:"Review quiz",notes:"My notes · reflection",notesPh:"Real cases from work, what you now see differently, open questions…",
+      saved:"Saved",saving:"Saving…",local:"Saving in this browser only",cloud:"Synced to your account",markDone:"Mark lesson complete",isDone:"Completed ✓",prev:"Previous",next:"Next",
+      correct:"Correct",wrong:"Not quite",retry:"Try again",lessons:"lessons",completed:"done",start:"Continue learning",begin:"Start the first lesson",
+      heroP:"A living textbook that re-reads what I learned about UX earlier through the lens of AI and agent-era practice. Each lesson puts then and now side by side, and keeps my own judgments and notes.",
+      shiftT:"Then → now: what shifted",modulesT:"Curriculum",howT:"How to use it",
+      how:[["Read in pairs","Left is what I learned then, right is today's view. The gap itself is the lesson."],["Record your take","Change a lesson's status and write notes. Changes land in your journal automatically."],["Keep growing it","When work teaches you something new, add or edit lessons and bump the edition."]],
+      logT:"Journal",logP:"A timeline of textbook editions and the moments you changed a judgment or finished a lesson.",addPh:"One line on what you learned or now see differently…",add:"Add entry",
+      edition:"Edition",stChange:"Changed take",done:"Lesson done",entry:"Note",noEntries:"No entries yet. Finish a lesson or change a status and it shows up here.",
+      copyMd:"Copy my notes as Markdown",copied:"Copied",copyFail:"Couldn't copy",src:"Source",of:"Module",statusOf:"Status mix"}
+};
+const STATUSES=["holds","evolved","new","fading"];
+let lang = (()=>{try{return localStorage.getItem("tn-lang")||"ko"}catch(e){return "ko"}})();
+const t = k => UI[lang][k];
+const tx = o => (o && (o[lang] ?? o.en ?? o.ko)) || "";
+const esc = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* ---------- store: db per user, localStorage fallback ---------- */
+const state = { lessons:{}, journal:[] };   // lessons[id] = {done,status,note,quiz}
+let mode = "local", col = null, writeQ = {};
+function loadLocal(){ try{ const s=JSON.parse(localStorage.getItem("tn-state")||"null"); if(s){state.lessons=s.lessons||{};state.journal=s.journal||[];} }catch(e){} }
+function saveLocal(){ try{ localStorage.setItem("tn-state",JSON.stringify(state)); }catch(e){} }
+loadLocal();
+function ls(id){ return state.lessons[id] || (state.lessons[id]={}); }
+function persist(docId){
+  saveLocal();
+  if(mode!=="cloud") return Promise.resolve();
+  // one write at a time per doc
+  const body = docId==="journal" ? {entries: state.journal.slice(-400)} : Object.assign({}, state.lessons[docId.slice(2)]);
+  const prev = writeQ[docId] || Promise.resolve();
+  const p = prev.catch(()=>{}).then(()=>col.doc(docId).set(body)).catch(e=>{ if(e&&e.code==="quota_exceeded") toast("Storage full"); });
+  writeQ[docId]=p; return p;
+}
+const timers={};
+function persistSoon(docId,ms=700,cb){ clearTimeout(timers[docId]); timers[docId]=setTimeout(()=>persist(docId).then(cb),ms); }
+function setSync(){ document.getElementById("sync").textContent = (mode==="cloud"? t("cloud") : t("local")); }
+(async function connect(){
+  try{
+    if(!window.claude || !claude.use) return;
+    const [db,user] = await Promise.all([claude.use("db"), claude.use("user")]);
+    if(!db||!user) return;
+    const uid = await user.id(); if(!uid) return;
+    col = db.collection("data/users/"+uid);
+    let first = true;
+    const to = setTimeout(()=>{ if(first) setSync(); },10000);
+    col.onSnapshot(snap=>{
+      clearTimeout(to);
+      if(first && snap.empty && !snap.metadata.fromCache){
+        // first visit with cloud: upload anything kept locally
+        mode="cloud"; first=false;
+        Object.keys(state.lessons).forEach(id=>persist("L_"+id));
+        if(state.journal.length) persist("journal");
+        setSync(); return;
+      }
+      snap.docs.forEach(d=>{
+        const v=d.data(); if(!v) return;
+        if(d.id==="journal") state.journal = Array.isArray(v.entries)? v.entries.slice() : [];
+        else if(d.id.startsWith("L_")){
+          const id=d.id.slice(2);
+          // don't clobber a note the person is typing right now
+          const cur = state.lessons[id]||{}; const typing = document.activeElement && document.activeElement.id==="note" && route.id===id;
+          state.lessons[id] = Object.assign({}, v, typing? {note:cur.note}:{});
+        }
+      });
+      if(!snap.metadata.fromCache){ mode="cloud"; saveLocal(); }
+      if(first){ first=false; render(); } else softRefresh();
+      setSync();
+    }, ()=>{ mode="local"; setSync(); });
+  }catch(e){ mode="local"; setSync(); }
+})();
+
+/* ---------- helpers ---------- */
+function statusOf(l){ return ls(l.id).status || l.status; }
+function doneCount(){ return L.filter(l=>ls(l.id).done).length; }
+function fmtDate(iso){ try{ return new Intl.DateTimeFormat(lang==="ko"?"ko-KR":"en-US",{year:"numeric",month:"short",day:"numeric"}).format(new Date(iso+"T12:00:00")); }catch(e){ return iso; } }
+function today(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function addJournal(e){ state.journal.push(Object.assign({date:today(), ts:Date.now()},e)); persist("journal"); }
+function toast(msg){ const el=document.getElementById("toast"); el.textContent=msg; el.classList.add("on"); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove("on"),1600); }
+
+/* ---------- routing ---------- */
+let route={view:"home"};
+function parse(){ const h=location.hash.slice(1); if(h==="log") route={view:"log"}; else if(h.startsWith("l-")&&byId[h.slice(2)]) route={view:"lesson",id:h.slice(2)}; else route={view:"home"}; }
+window.addEventListener("hashchange",()=>{ parse(); render(); window.scrollTo(0,0); const sd=document.getElementById("side"); if(sd.classList.contains("open")){ sd.classList.remove("open"); document.getElementById("menuBtn").setAttribute("aria-expanded","false"); } const v=document.getElementById("view"); if(v) v.focus({preventScroll:true}); });
+
+/* ---------- sidebar ---------- */
+const collapsed = new Set();
+function renderNav(){
+  const d=doneCount();
+  document.getElementById("progTxt").textContent = t("progress")(d,L.length);
+  document.getElementById("progBar").style.transform = "scaleX("+(d/L.length)+")";
+  document.querySelectorAll(".lang button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.lang===lang));
+  let h=`<div class="navtop"><a href="#home" class="${route.view==="home"?"on":""}">${t("home")}</a><a href="#log" class="${route.view==="log"?"on":""}">${t("log")}</a></div>`;
+  M.forEach(m=>{
+    const ls_=L.filter(l=>l.m===m.id); const dn=ls_.filter(l=>ls(l.id).done).length;
+    h+=`<div class="mod ${collapsed.has(m.id)?"collapsed":""}"><button data-mod="${m.id}" aria-expanded="${!collapsed.has(m.id)}"><span class="no">${m.no}</span><span class="mt">${esc(tx(m))}${m.isNew?`<span class="newtag">${lang==="ko"?"새 모듈":"New"}</span>`:""}</span><span class="mc">${dn}/${ls_.length}</span></button><ul class="lessons">`;
+    ls_.forEach(l=>{ h+=`<li><a href="#l-${l.id}" class="${route.id===l.id?"on":""}"><span class="dot s-${statusOf(l)}" title="${esc(t(statusOf(l)))}"></span><span>${esc(tx(l.title))}</span>${ls(l.id).done?'<span class="chk">✓</span>':""}</a></li>`; });
+    h+=`</ul></div>`;
+  });
+  const nav=document.getElementById("nav"); nav.innerHTML=h;
+  nav.querySelectorAll("[data-mod]").forEach(b=>b.onclick=()=>{ const id=b.dataset.mod; collapsed.has(id)?collapsed.delete(id):collapsed.add(id); renderNav(); });
+  setSync();
+}
+
+/* ---------- home ---------- */
+function renderHome(){
+  const counts = Object.fromEntries(STATUSES.map(s=>[s,L.filter(l=>statusOf(l)===s).length]));
+  const d=doneCount(); const nextL = L.find(l=>!ls(l.id).done) || L[0];
+  let h=`<div class="hero"><div>
+    <h2>Then → Now</h2></div>
+    <div><p>${esc(t("heroP"))}</p><a class="btn primary" href="#l-${nextL.id}">${esc(d?t("start"):t("begin"))}</a></div></div>`;
+  h+=`<p class="summary">${lang==="ko"
+      ? `레슨 ${L.length}개 중 ${d}개를 마쳤어요. 그때 배운 것 가운데 ${counts.holds}개는 여전히 유효하고, ${counts.evolved}개는 진화했고, ${counts.new}개는 새로 생겼어요.`
+      : `${d} of ${L.length} lessons done. Of what I learned then, ${counts.holds} still hold, ${counts.evolved} have evolved and ${counts.new} are new.`}</p>`;
+  h+=`<div class="shift"><div class="eyebrow" style="margin-bottom:8px">${esc(t("shiftT"))}</div><div class="track">${STATUSES.map(s=>counts[s]?`<span class="s-${s}" style="flex:${counts[s]}" title="${esc(t(s))}: ${counts[s]}"></span>`:"").join("")}</div>
+    <div class="legend">${STATUSES.map(s=>`<span><span class="dot s-${s}" style="display:inline-block;margin-right:6px"></span>${esc(t(s))} ${counts[s]}</span>`).join("")}</div></div>`;
+  h+=`<h3 class="sec">${esc(t("modulesT"))}</h3><ol class="modlist">`;
+  M.forEach(m=>{ const ms=L.filter(l=>l.m===m.id); const first=ms.find(l=>!ls(l.id).done)||ms[0]; const dn=ms.filter(l=>ls(l.id).done).length;
+    h+=`<li><a href="#l-${first.id}"><span class="no">${m.no}</span><span class="mt"><b>${esc(tx(m))}</b>${m.isNew?` <span class="newtag">${lang==="ko"?"새 모듈":"New"}</span>`:""}<span class="ml">${ms.map(l=>esc(tx(l.title))).join(", ")}</span></span><span class="mp">${dn}/${ms.length}</span></a></li>`; });
+  h+=`</ol><h3 class="sec">${esc(t("howT"))}</h3><div class="how">${t("how").map(([a,b])=>`<div><b>${esc(a)}</b>${esc(b)}</div>`).join("")}</div>`;
+  return h;
+}
+
+/* ---------- lesson ---------- */
+function renderLesson(id){
+  const l=byId[id], s=ls(id), m=M.find(x=>x.id===l.m), idx=L.indexOf(l);
+  const prev=L[idx-1], next=L[idx+1], st=statusOf(l);
+  const q=l.quiz, ans=s.quiz;
+  let h=`<h2 class="title">${esc(tx(l.title))}</h2>
+    <span class="src">${esc(t("src"))}: ${esc(tx(l.src))}</span>
+    <div class="statusrow" role="group" aria-label="${esc(t("status"))}"><span class="lbl">${esc(t("status"))}</span>
+      ${STATUSES.map(x=>`<button class="pill ${x}" data-st="${x}" aria-pressed="${x===st}"><span class="dot s-${x}"></span>${esc(t(x))}</button>`).join("")}</div>
+    ${sceneUI(id)}
+    <div class="compare">
+      <div class="side then"><div class="yr">Then</div><div class="cap">${esc(t("then"))}</div><ul>${(l.then[lang]||l.then.en).map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+      <div class="side now"><div class="yr">Now</div><div class="cap">${esc(t("now"))}</div><ul>${(l.now[lang]||l.now.en).map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+    </div>
+    <section class="block"><h3>${esc(t("practice"))}</h3><div class="task">${esc(tx(l.practice))}</div></section>
+    <section class="block"><h3>${esc(t("quiz"))}</h3><div class="quiz"><div class="q">${esc(tx(q.q))}</div><div class="opts">
+      ${q.opts.map((o,i)=>{ let c=""; if(ans!=null){ if(i===q.a) c="right"; else if(i===ans) c="wrong"; }
+        return `<button class="opt ${c}" data-opt="${i}" ${ans!=null?"disabled":""}><span class="k">${"ABCD"[i]}</span><span>${esc(tx(o))}</span></button>`; }).join("")}
+      </div>${ans!=null?`<div class="why"><b>${ans===q.a?esc(t("correct")):esc(t("wrong"))}.</b> ${esc(tx(q.why))} <button class="btn" style="min-height:32px;padding:0 12px;margin-left:6px;font-size:13px" id="retry">${esc(t("retry"))}</button></div>`:""}</div></section>
+    <section class="block"><h3 id="notesH">${esc(t("notes"))}</h3><textarea id="note" name="note" aria-labelledby="notesH" autocomplete="off" placeholder="${esc(t("notesPh"))}"></textarea><div class="saved" id="saved" aria-live="polite"></div></section>
+    <div class="footer-nav">
+      ${prev?`<a class="btn" href="#l-${prev.id}" >${esc(t("prev"))}: ${esc(tx(prev.title))}</a>`:"<span></span>"}
+      <button class="btn ${s.done?"done":"primary"}" id="doneBtn">${esc(s.done?t("isDone"):t("markDone"))}</button>
+      ${next?`<a class="btn" href="#l-${next.id}" >${esc(t("next"))}: ${esc(tx(next.title))}</a>`:`<a class="btn" href="#log">${esc(t("log"))}</a>`}
+    </div>`;
+  return h;
+}
+function bindLesson(id){
+  const l=byId[id], s=ls(id);
+  const note=document.getElementById("note"); note.value=s.note||"";
+  note.addEventListener("input",()=>{ s.note=note.value; s.updated=Date.now(); document.getElementById("saved").textContent=t("saving");
+    persistSoon("L_"+id,800,()=>{ const el=document.getElementById("saved"); if(el) el.textContent=t("saved")+" · "+new Date().toLocaleTimeString(lang==="ko"?"ko-KR":"en-US",{hour:"2-digit",minute:"2-digit"}); }); });
+  document.querySelectorAll("[data-st]").forEach(b=>b.onclick=()=>{
+    const from=statusOf(l), to=b.dataset.st; if(from===to) return;
+    s.status=to; persist("L_"+id); addJournal({type:"status",lesson:id,from,to}); render();
+  });
+  document.querySelectorAll("[data-opt]").forEach(b=>b.onclick=()=>{ s.quiz=+b.dataset.opt; persist("L_"+id); render(); });
+  const r=document.getElementById("retry"); if(r) r.onclick=()=>{ delete s.quiz; persist("L_"+id); render(); };
+  document.getElementById("doneBtn").onclick=()=>{ s.done=!s.done; persist("L_"+id); if(s.done) addJournal({type:"done",lesson:id}); render(); };
+}
+
+
+/* ---------- scene player ---------- */
+let AVN=0;
+/* soft glowing egg-shaped animals: one silhouette, features painted inside as blurred patches */
+window.__av=(...a)=>avatar(...a);
+function avatar(c,size=64){
+  const id="av"+(AVN++), [w,m,d]=c.hue, acc=c.accent, G=`url(#${id}g)`, B=`url(#${id}b)`, S=`url(#${id}s)`;
+  // each animal: [silhouette shapes (filled with the body gradient), face details]
+  const A={
+    owl:[`<path d="M17 44L20 10L40 32Z M83 44L80 10L60 32Z"/><ellipse cx="50" cy="72" rx="40" ry="44"/>
+          <ellipse cx="11" cy="80" rx="9" ry="22" transform="rotate(12 11 80)"/><ellipse cx="89" cy="80" rx="9" ry="22" transform="rotate(-12 89 80)"/>`,
+         `<circle cx="35" cy="62" r="14" fill="${w}" filter="${B}"/><circle cx="65" cy="62" r="14" fill="${w}" filter="${B}"/>
+          <circle cx="35" cy="62" r="9" fill="${acc}" filter="${S}"/><circle cx="65" cy="62" r="9" fill="${acc}" filter="${S}"/>
+          <circle cx="35" cy="63" r="6" fill="${d}" filter="${S}"/><circle cx="65" cy="63" r="6" fill="${d}" filter="${S}"/>
+          <path d="M44 76L56 76L50 88Z" fill="#E8962E" filter="${S}"/>
+          <path d="M34 100q6 6 12 0M54 100q6 6 12 0" stroke="${w}" stroke-width="2" fill="none" opacity=".6" filter="${S}"/>`],
+    cat:[`<path d="M16 54L18 12L46 40Z M84 54L82 12L54 40Z"/><ellipse cx="50" cy="78" rx="38" ry="38"/>
+          <path d="M84 104C104 100 108 78 96 66" stroke="${G}" stroke-width="10" stroke-linecap="round" fill="none"/>`,
+         `<path d="M22 46L23 24L38 40Z M78 46L77 24L62 40Z" fill="${acc}" opacity=".9" filter="${S}"/>
+          <ellipse cx="36" cy="72" rx="8" ry="5.5" transform="rotate(-10 36 72)" fill="${d}" filter="${S}"/><ellipse cx="64" cy="72" rx="8" ry="5.5" transform="rotate(10 64 72)" fill="${d}" filter="${S}"/>
+          <path d="M46 82L54 82L50 87Z" fill="${acc}" filter="${S}"/>
+          <path d="M18 84L35 86M18 91L35 89M82 84L65 86M82 91L65 89" stroke="${w}" stroke-width="1.8" opacity=".85"/>`],
+    rabbit:[`<ellipse cx="37" cy="30" rx="9" ry="27" transform="rotate(-10 37 30)"/><ellipse cx="63" cy="30" rx="9" ry="27" transform="rotate(10 63 30)"/>
+          <ellipse cx="50" cy="86" rx="34" ry="31"/><circle cx="85" cy="106" r="8" fill="${w}"/>`,
+         `<ellipse cx="37" cy="32" rx="4" ry="18" transform="rotate(-10 37 32)" fill="${acc}" filter="${S}"/><ellipse cx="63" cy="32" rx="4" ry="18" transform="rotate(10 63 32)" fill="${acc}" filter="${S}"/>
+          <circle cx="38" cy="80" r="5.5" fill="${d}" filter="${S}"/><circle cx="62" cy="80" r="5.5" fill="${d}" filter="${S}"/>
+          <ellipse cx="50" cy="93" rx="10" ry="7" fill="${w}" filter="${B}"/><ellipse cx="50" cy="90" rx="3.5" ry="2.6" fill="${d}" filter="${S}"/>
+          <circle cx="28" cy="92" r="5" fill="${acc}" opacity=".8" filter="${B}"/><circle cx="72" cy="92" r="5" fill="${acc}" opacity=".8" filter="${B}"/>`],
+    fox:[`<ellipse cx="94" cy="96" rx="12" ry="24" transform="rotate(35 94 96)"/><path d="M12 62L10 8L46 46Z M88 62L90 8L54 46Z"/><ellipse cx="50" cy="82" rx="36" ry="35"/>`,
+         `<ellipse cx="103" cy="84" rx="6" ry="9" transform="rotate(35 103 84)" fill="${w}" filter="${S}"/>
+          <path d="M18 24L20 50L36 44Z M82 24L80 50L64 44Z" fill="${d}" opacity=".6" filter="${S}"/>
+          <path d="M16 74Q50 64 84 74L50 112Z" fill="${w}" filter="${B}"/>
+          <ellipse cx="36" cy="76" rx="5.5" ry="4.5" fill="${d}" filter="${S}"/><ellipse cx="64" cy="76" rx="5.5" ry="4.5" fill="${d}" filter="${S}"/>
+          <ellipse cx="50" cy="98" rx="5" ry="4" fill="${d}" filter="${S}"/>`],
+    chick:[`<path d="M50 54C44 40 50 30 58 36C56 42 54 48 52 54Z M50 54C50 44 42 38 38 44C42 46 46 50 48 54Z"/>
+          <circle cx="50" cy="86" r="34"/><ellipse cx="16" cy="88" rx="7" ry="13" transform="rotate(25 16 88)"/><ellipse cx="84" cy="88" rx="7" ry="13" transform="rotate(-25 84 88)"/>`,
+         `<circle cx="39" cy="80" r="4.5" fill="${d}" filter="${S}"/><circle cx="61" cy="80" r="4.5" fill="${d}" filter="${S}"/>
+          <path d="M43 88L57 88L50 97Z" fill="${acc}"/>
+          <circle cx="30" cy="92" r="5" fill="${acc}" opacity=".45" filter="${B}"/><circle cx="70" cy="92" r="5" fill="${acc}" opacity=".45" filter="${B}"/>
+          <path d="M40 120v6M36 126h8M60 120v6M56 126h8" stroke="${acc}" stroke-width="2.5" stroke-linecap="round"/>`],
+    deer:[`<path d="M36 34C30 22 28 12 32 4M32 16C26 14 22 10 22 6M78 40C70 28 68 18 72 10M72 22C78 18 80 14 80 8" stroke="${G}" stroke-width="5" stroke-linecap="round" fill="none" transform="translate(-6 0)"/>
+          <ellipse cx="16" cy="56" rx="12" ry="6" transform="rotate(-20 16 56)"/><ellipse cx="84" cy="56" rx="12" ry="6" transform="rotate(20 84 56)"/>
+          <ellipse cx="50" cy="80" rx="32" ry="38"/>`,
+         `<ellipse cx="16" cy="56" rx="6" ry="2.6" transform="rotate(-20 16 56)" fill="${acc}" filter="${S}"/><ellipse cx="84" cy="56" rx="6" ry="2.6" transform="rotate(20 84 56)" fill="${acc}" filter="${S}"/>
+          <circle cx="38" cy="72" r="5" fill="${d}" filter="${S}"/><circle cx="62" cy="72" r="5" fill="${d}" filter="${S}"/>
+          <ellipse cx="50" cy="94" rx="13" ry="10" fill="${acc}" opacity=".9" filter="${B}"/><ellipse cx="50" cy="90" rx="4" ry="3" fill="${d}" filter="${S}"/>
+          <circle cx="32" cy="104" r="2.5" fill="${w}"/><circle cx="68" cy="100" r="2.5" fill="${w}"/><circle cx="60" cy="110" r="2" fill="${w}"/>`],
+    bear:[`<circle cx="22" cy="40" r="15"/><circle cx="78" cy="40" r="15"/><ellipse cx="50" cy="80" rx="38" ry="38"/>
+          <ellipse cx="13" cy="96" rx="8" ry="15" transform="rotate(20 13 96)"/><ellipse cx="87" cy="96" rx="8" ry="15" transform="rotate(-20 87 96)"/>`,
+         `<circle cx="22" cy="40" r="7.5" fill="${acc}" opacity=".9" filter="${S}"/><circle cx="78" cy="40" r="7.5" fill="${acc}" opacity=".9" filter="${S}"/>
+          <circle cx="37" cy="72" r="5" fill="${d}" filter="${S}"/><circle cx="63" cy="72" r="5" fill="${d}" filter="${S}"/>
+          <ellipse cx="50" cy="90" rx="15" ry="11" fill="${w}" filter="${B}"/><ellipse cx="50" cy="85" rx="5.5" ry="4" fill="${d}" filter="${S}"/>
+          <path d="M45 93q5 4 10 0" stroke="${d}" stroke-width="2" fill="none" opacity=".7" filter="${S}"/>
+          `],
+    snowy:[`<ellipse cx="50" cy="74" rx="38" ry="46"/><path d="M14 64C0 84 4 108 20 116C20 100 22 84 26 72Z M86 64C100 84 96 108 80 116C80 100 78 84 74 72Z"/>
+          <path d="M26 34L30 26L38 32Z M74 34L70 26L62 32Z"/>`,
+         `<ellipse cx="50" cy="56" rx="28" ry="22" fill="${w}" filter="${B}"/>
+          <circle cx="38" cy="54" r="7.5" fill="${acc}" filter="${S}"/><circle cx="62" cy="54" r="7.5" fill="${acc}" filter="${S}"/>
+          <circle cx="38" cy="55" r="4" fill="#1B1A24" filter="${S}"/><circle cx="62" cy="55" r="4" fill="#1B1A24" filter="${S}"/>
+          <path d="M47 64L53 64L50 70Z" fill="#3A3A44" filter="${S}"/>
+          <g stroke="${d}" stroke-width="2.2" fill="none" stroke-linecap="round" opacity=".75" filter="${S}">
+          <path d="M30 86q4 3 8 0M44 92q4 3 8 0M58 86q4 3 8 0M36 100q4 3 8 0M52 102q4 3 8 0M22 96q3 2 6 0M72 96q3 2 6 0M44 112q4 3 8 0"/></g>`],
+    owlet:[`<circle cx="50" cy="84" r="34"/><circle cx="22" cy="70" r="9"/><circle cx="78" cy="70" r="9"/><circle cx="30" cy="56" r="9"/><circle cx="70" cy="56" r="9"/><circle cx="50" cy="50" r="10"/>
+          <circle cx="18" cy="92" r="8"/><circle cx="82" cy="92" r="8"/><circle cx="28" cy="112" r="8"/><circle cx="72" cy="112" r="8"/><circle cx="50" cy="118" r="8"/>`,
+         `<ellipse cx="50" cy="78" rx="26" ry="20" fill="${w}" filter="${B}"/>
+          <circle cx="38" cy="76" r="9" fill="${acc}" filter="${S}"/><circle cx="62" cy="76" r="9" fill="${acc}" filter="${S}"/>
+          <circle cx="38" cy="77" r="5.5" fill="#1B1A24" filter="${S}"/><circle cx="62" cy="77" r="5.5" fill="#1B1A24" filter="${S}"/>
+          <circle cx="40" cy="75" r="1.6" fill="#fff"/><circle cx="64" cy="75" r="1.6" fill="#fff"/>
+          <path d="M47 86L53 86L50 92Z" fill="#3A3A44" filter="${S}"/>
+          <path d="M40 120v5M36 125h8M60 120v5M56 125h8" stroke="${acc}" stroke-width="2.5" stroke-linecap="round"/>`],
+    elephant:[`<ellipse cx="16" cy="70" rx="18" ry="24"/><ellipse cx="84" cy="70" rx="18" ry="24"/><ellipse cx="50" cy="80" rx="34" ry="38"/>
+          <path d="M50 86C50 102 44 112 36 116" stroke="${G}" stroke-width="12" stroke-linecap="round" fill="none"/>`,
+         `<ellipse cx="16" cy="70" rx="10" ry="15" fill="${acc}" opacity=".55" filter="${B}"/><ellipse cx="84" cy="70" rx="10" ry="15" fill="${acc}" opacity=".55" filter="${B}"/>
+          <circle cx="38" cy="70" r="4.5" fill="${d}" filter="${S}"/><circle cx="62" cy="70" r="4.5" fill="${d}" filter="${S}"/>
+          <circle cx="30" cy="84" r="5" fill="${acc}" opacity=".5" filter="${B}"/><circle cx="70" cy="84" r="5" fill="${acc}" opacity=".5" filter="${B}"/>
+          <path d="M44 94q3 2 6 0M44 102q3 2 5 0" stroke="${w}" stroke-width="1.6" fill="none" opacity=".7"/>`],
+    bird:[`<path d="M50 26C44 12 46 2 52 0C52 10 54 18 54 26Z M44 28C34 18 30 10 34 6C38 14 42 20 48 26Z M56 28C66 18 70 10 66 6C62 14 58 20 52 26Z"/>
+          <ellipse cx="50" cy="72" rx="32" ry="46"/><path d="M20 70C4 84 6 100 18 106C20 96 22 84 24 76Z M80 70C96 84 94 100 82 106C80 96 78 84 76 76Z"/>`,
+         `<path d="M50 40C64 34 78 44 74 62C71 78 60 86 50 92C40 86 29 78 26 62C22 44 36 34 50 40Z" fill="${w}" filter="${B}"/>
+          <circle cx="40" cy="60" r="5" fill="${d}" filter="${S}"/><circle cx="60" cy="60" r="5" fill="${d}" filter="${S}"/>
+          <path d="M44 70L56 70L50 78Z" fill="${d}" opacity=".8" filter="${S}"/>`]
+  };
+  const [sil,face]=A[c.animal]||A.chick;
+  const orbit=c.animal==="bird"?`<g class="orbit"><ellipse cx="50" cy="74" rx="52" ry="13" transform="rotate(-14 50 74)" fill="none" stroke="${acc}" stroke-width="2" opacity=".9" filter="${S}"/><circle cx="98" cy="62" r="4" fill="${acc}" filter="${S}"/></g>`:"";
+  const spark=c.sparkle?`<path d="M100 4l2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5z" fill="#fff" class="spark"/>`:"";
+  const h=size, wpx=Math.round(h*128/146);
+  return `<svg class="ani" width="${wpx}" height="${h}" viewBox="-14 -10 128 146" aria-hidden="true"><defs>
+    <radialGradient id="${id}g" gradientUnits="userSpaceOnUse" cx="44" cy="44" r="92"><stop offset="0" stop-color="${w}"/><stop offset=".5" stop-color="${m}"/><stop offset="1" stop-color="${d}"/></radialGradient>
+    <filter id="${id}b" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="${id}s" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="1.3"/></filter>
+    <filter id="${id}o" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="8"/></filter>
+    <filter id="${id}e" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation=".6"/></filter></defs>
+    <g fill="${m}" opacity=".55" filter="url(#${id}o)" class="halo">${sil}</g>
+    <ellipse cx="50" cy="124" rx="28" ry="4" fill="${d}" opacity=".35" filter="${S}"/>
+    <g fill="${G}" filter="url(#${id}e)">${sil}</g>${face}${orbit}${spark}</svg>`;
+}
+const ICONS={
+  frame:`<svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="8" width="48" height="48" rx="3" fill="none" stroke="var(--then)" stroke-width="5"/><path d="M16 44c6-10 10-4 14-12s10-6 18-14" fill="none" stroke="var(--ink-3)" stroke-width="3" stroke-linecap="round"/><circle cx="24" cy="22" r="5" fill="var(--evolved)"/></svg>`,
+  brush:`<svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><path d="M40 10l14 14-20 20-14-14z" fill="var(--then-bg)" stroke="var(--then)" stroke-width="3" stroke-linejoin="round"/><path d="M20 30c-8 2-10 10-12 22 10-2 20-4 22-12" fill="var(--then)"/></svg>`,
+  grid:`<svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="10" width="20" height="20" rx="4" fill="var(--now)"/><rect x="36" y="10" width="20" height="20" rx="4" fill="none" stroke="var(--now)" stroke-width="3"/><rect x="8" y="36" width="20" height="20" rx="4" fill="none" stroke="var(--now)" stroke-width="3"/><path d="M38 46h16M46 38v16" stroke="var(--now)" stroke-width="3" stroke-linecap="round"/></svg>`,
+  bag:`<svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><path d="M14 10h36l-3 6 3 6v30l-3 4H17l-3-4V22l3-6z" fill="var(--now-bg)" stroke="var(--now)" stroke-width="3" stroke-linejoin="round"/><circle cx="32" cy="36" r="9" fill="var(--now)"/><path d="M20 24h24" stroke="var(--now)" stroke-width="3"/></svg>`
+};
+function cardHTML(c){
+  if(!c) return "";
+  if(c.kind==="title") return `<div class="ccard"><div class="big">${esc(tx(c))}</div></div>`;
+  if(c.kind==="vs") return `<div class="ccard"><div class="vs"><div class="${c.emph==="b"?"dim":""}">${ICONS[c.a.icon]||""}<div>${esc(tx(c.a))}</div></div><span class="x">vs</span><div class="${c.emph==="b"?"em":""}">${ICONS[c.b.icon]||""}<div>${esc(tx(c.b))}</div></div></div></div>`;
+  if(c.kind==="list") return `<div class="ccard"><ul>${(c[lang]||c.en).map((x,i)=>`<li style="animation-delay:${i*0.35}s">${esc(x)}</li>`).join("")}</ul></div>`;
+  if(c.kind==="quote") return `<div class="ccard"><div class="q">“${esc(tx(c))}”</div></div>`;
+  if(c.kind==="shift") return `<div class="ccard"><div class="sh"><div class="a"><small>${lang==="ko"?"그때":"Then"}</small>${esc(tx(c.then))}</div><div style="text-align:center;padding:0;color:var(--ink-3)">↓</div><div class="b"><small>${lang==="ko"?"지금":"Now"}</small>${esc(tx(c.now))}</div></div></div>`;
+  return "";
+}
+const SC={i:0,playing:false,timer:null,lastCard:null};
+function sceneUI(id){
+  const sc=C.scenes&&C.scenes[id]; if(!sc) return "";
+  const used=new Set(sc.beats.map(b=>b.who));
+  const opt=new Set(["now","t","t2"]); const ids=["t","t2","min","seo","jun","ria","me","now"].filter(k=>C.cast[k] && (!opt.has(k) || used.has(k)));
+  return `<div class="scene" id="scene"><div class="scene-head"><b>${lang==="ko"?"수업 장면":"Class scene"}</b>${sc.draft?`<span class="draft">${lang==="ko"?"가안":"DRAFT"}</span>`:""}<span class="src">${esc(tx(sc.source))}</span></div>
+    <div class="stage"><button class="vtoggle" id="scVoice" aria-pressed="false" hidden><span class="vi" aria-hidden="true"></span><span class="vl"></span></button><div class="cast">${ids.map(w=>`<div class="who" data-who="${w}">${avatar(C.cast[w],66)}<span>${esc(tx(C.cast[w]))}</span></div>`).join("")}</div><div class="talk"><div class="bubble" id="bubble" aria-live="polite"></div></div><div class="cardbox" id="cardbox"></div></div>
+    <div class="controls"><button class="play" id="scPlay"><span class="pi" aria-hidden="true"></span><span class="pl"></span></button><div class="segs paused" id="segs">${sc.beats.map((_,i)=>`<button type="button" class="seg" data-seg="${i}" aria-label="${lang==="ko"?`장면 ${i+1}`:`Scene ${i+1}`}"><i></i></button>`).join("")}</div><button id="scPrev" class="step" aria-label="${lang==="ko"?"이전 장면":"Previous scene"}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M9 2L4 7l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button id="scNext" class="step" aria-label="${lang==="ko"?"다음 장면":"Next scene"}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M5 2l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+    <div class="note-fic">${lang==="ko"?"등장인물은 가상의 캐릭터이며, 대화는 수업 내용을 바탕으로 재구성했습니다.":"Characters are fictional; dialogue is reconstructed from the class content."}</div></div>`;
+}
+function beatDur(b){ return Math.min(9000, 1600 + tx(b.text).length*65); }
+function showBeat(id,i){
+  const sc=C.scenes[id], b=sc.beats[i]; SC.i=i; clearTimeout(SC.timer);
+  const who=C.cast[b.who];
+  document.querySelectorAll("#scene .who").forEach(el=>el.classList.toggle("on",el.dataset.who===b.who));
+  const bub=document.getElementById("bubble"); bub.className="bubble"+(b.who==="now"?" now":"");
+  bub.innerHTML=`<span class="nm">${esc(tx(who))}${who.bio?`<span class="bio">${esc(tx(who.bio))}</span>`:""}${b.t?`<span class="ts">${esc(b.s||sc.session||"")} ${esc(b.t)}</span>`:""}</span><span id="btxt"></span>`;
+  const full=tx(b.text), el=document.getElementById("btxt");
+  const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduce||!SC.playing){ el.textContent=full; } else { let k=0; const step=()=>{ if(SC.i!==i||!document.getElementById("btxt")) return; k+=2; el.textContent=full.slice(0,k); if(k<full.length) setTimeout(step,28); }; step(); }
+  // card persists until the next beat that has one
+  let card=null; for(let j=i;j>=0;j--){ if(sc.beats[j].card){ card=sc.beats[j].card; break; } }
+  if(card!==SC.lastCard){ document.getElementById("cardbox").innerHTML=cardHTML(card); SC.lastCard=card; }
+  const pv=document.getElementById("scPrev"), nx=document.getElementById("scNext"); if(pv) pv.disabled=(i===0); if(nx) nx.disabled=(i===sc.beats.length-1);
+  const d=beatDur(b);
+  document.querySelectorAll("#segs .seg").forEach((s,j)=>{ s.className="seg "+(j<i?"past":(j===i?"cur":"")); s.style.setProperty("--d",d+"ms"); if(j===i) s.setAttribute("aria-current","step"); else s.removeAttribute("aria-current"); });
+  const segs=document.getElementById("segs"); segs.classList.toggle("paused",!SC.playing||SC.voiced);
+  const cur=segs.querySelector(".seg.cur"); if(cur){ cur.classList.remove("cur"); void cur.offsetWidth; cur.classList.add("cur"); }
+  if(SC.playing && !SC.voiced){ SC.timer=setTimeout(()=>{ if(i+1<sc.beats.length) showBeat(id,i+1); else { SC.playing=false; setPlayLabel(); document.getElementById("segs").classList.add("paused"); } }, d); }
+}
+/* voices via the tts capability; text stays on screen, voice is opt-in */
+const VO={t:null,on:false,unsub:[]};
+(async()=>{ try{ if(!window.claude||!claude.use) return; const t=await claude.use("tts"); if(!t) return; VO.t=t;
+  t.onLine(({id})=>{ if(!SC.voiced||!id||!route.id) return; const j=+id.slice(1); if(C.scenes[route.id]) showBeat(route.id,j); });
+  t.onState(({state,reason})=>{ if(state==="idle"&&SC.voiced){ SC.voiced=false; if(reason!=="replaced"){ SC.playing=false; setPlayLabel(); const sg=document.getElementById("segs"); if(sg) sg.classList.add("paused"); }
+      if(reason==="not_granted"||reason==="unavailable"){ VO.t=null; VO.on=false; const b=document.getElementById("scVoice"); if(b) b.hidden=true; } } });
+  const b=document.getElementById("scVoice"); if(b) b.hidden=false; }catch(e){} })();
+function speakFrom(id,i){
+  const sc=C.scenes[id]; const lines=sc.beats.slice(i).map((b,k)=>{ const c=C.cast[b.who]||{}; return {text:tx(b.text), voice:c.voice, rate:c.rate, language:lang==="ko"?"ko":"en", id:"b"+(i+k)}; });
+  SC.voiced=true; clearTimeout(SC.timer); showBeat(id,i);
+  VO.t.speak(lines).catch(e=>{ if(e&&e.code==="no_gesture"){ SC.voiced=false; SC.playing=false; setPlayLabel(); }
+    else if(e&&(e.code==="not_granted"||e.code==="unavailable")){ VO.on=false; VO.t=null; const b=document.getElementById("scVoice"); if(b) b.hidden=true; SC.voiced=false; showBeat(id,SC.i); } });
+}
+function stopVoice(){ if(VO.t&&SC.voiced){ SC.voiced=false; VO.t.stop().catch(()=>{}); } }
+const ICO={play:'<svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z" fill="currentColor"/></svg>',
+  pause:'<svg width="12" height="12" viewBox="0 0 12 12"><rect x="2" y="1" width="3" height="10" rx="1" fill="currentColor"/><rect x="7" y="1" width="3" height="10" rx="1" fill="currentColor"/></svg>',
+  on:'<svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 6h3l4-3v10l-4-3H2z" fill="currentColor"/><path d="M11 5.5a3.5 3.5 0 010 5M12.8 3.5a6 6 0 010 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  off:'<svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 6h3l4-3v10l-4-3H2z" fill="currentColor"/><path d="M11 6l4 4M15 6l-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>'};
+function setPlayLabel(){ const b=document.getElementById("scPlay"); if(!b) return;
+  b.querySelector(".pi").innerHTML = SC.playing?ICO.pause:ICO.play;
+  b.querySelector(".pl").textContent = SC.playing ? (lang==="ko"?"일시정지":"Pause") : (lang==="ko"?"재생":"Play"); }
+function setVoiceLabel(){ const b=document.getElementById("scVoice"); if(!b) return; b.setAttribute("aria-pressed",VO.on);
+  b.querySelector(".vi").innerHTML = VO.on?ICO.on:ICO.off;
+  b.querySelector(".vl").textContent = VO.on ? (lang==="ko"?"음성 켜짐":"Sound on") : (lang==="ko"?"음성 꺼짐":"Sound off"); }
+function bindScene(id){
+  if(!(C.scenes&&C.scenes[id])) return;
+  clearTimeout(SC.timer); SC.playing=false; SC.lastCard=undefined; const n=C.scenes[id].beats.length;
+  showBeat(id,0); setPlayLabel();
+  const go=j=>{ if(SC.playing&&VO.on&&VO.t) speakFrom(id,j); else showBeat(id,j); };
+  document.getElementById("scPlay").onclick=()=>{
+    if(SC.playing){ SC.playing=false; stopVoice(); setPlayLabel(); showBeat(id,SC.i); return; }
+    SC.playing=true; if(SC.i>=n-1) SC.i=0; setPlayLabel();
+    if(VO.on&&VO.t) speakFrom(id,SC.i); else showBeat(id,SC.i); };
+  document.getElementById("scNext").onclick=()=>{ if(SC.i+1<n) go(SC.i+1); };
+  document.getElementById("scPrev").onclick=()=>{ if(SC.i>0) go(SC.i-1); };
+  document.querySelectorAll("#segs .seg").forEach(s=>s.onclick=()=>go(+s.dataset.seg));
+  const vb=document.getElementById("scVoice"); setVoiceLabel(); if(VO.t){ vb.hidden=false; }
+  vb.onclick=()=>{ VO.on=!VO.on; setVoiceLabel(); if(!VO.on){ stopVoice(); if(SC.playing) showBeat(id,SC.i); } else if(SC.playing){ speakFrom(id,SC.i); } };
+}
+
+/* ---------- journal ---------- */
+function renderLog(){
+  const items=[...C.changelog.map(c=>({type:"edition",date:c.date,ts:Date.parse(c.date),version:c.version,ko:c.ko,en:c.en})), ...state.journal].sort((a,b)=>(b.ts||0)-(a.ts||0));
+  let h=`<h2 class="title">${esc(t("logT"))}</h2><p style="color:var(--ink-2);max-width:640px">${esc(t("logP"))}</p>
+    <div class="addlog"><input id="logIn" name="journal" autocomplete="off" aria-label="${esc(t("addPh"))}" placeholder="${esc(t("addPh"))}" maxlength="400"><button class="btn primary" id="logAdd">${esc(t("add"))}</button></div><ul class="timeline">`;
+  items.forEach(e=>{
+    const lt = e.lesson&&byId[e.lesson] ? `<a href="#l-${e.lesson}">${esc(tx(byId[e.lesson].title))}</a>` : "";
+    if(e.type==="edition") h+=`<li class="ed"><div class="d"><time datetime="${esc(e.date)}">${esc(fmtDate(e.date))}</time></div><div class="x"><span class="tag">${esc(t("edition"))} ${esc(e.version)}</span>${esc(tx(e))}</div></li>`;
+    else if(e.type==="status") h+=`<li class="st"><div class="d"><time datetime="${esc(e.date)}">${esc(fmtDate(e.date))}</time></div><div class="x"><span class="tag">${esc(t("stChange"))}</span>${lt}: ${esc(t(e.from)||e.from)} → <b>${esc(t(e.to)||e.to)}</b></div></li>`;
+    else if(e.type==="done") h+=`<li class="dn"><div class="d"><time datetime="${esc(e.date)}">${esc(fmtDate(e.date))}</time></div><div class="x"><span class="tag">${esc(t("done"))}</span>${lt}</div></li>`;
+    else h+=`<li><div class="d"><time datetime="${esc(e.date)}">${esc(fmtDate(e.date))}</time></div><div class="x"><span class="tag">${esc(t("entry"))}</span>${esc(e.text||"")}</div></li>`;
+  });
+  h+=`</ul>${state.journal.length?"":`<div class="empty">${esc(t("noEntries"))}</div>`}
+    <div style="margin-top:30px"><button class="btn" id="copyMd">${esc(t("copyMd"))}</button></div>`;
+  return h;
+}
+function bindLog(){
+  const inp=document.getElementById("logIn"), add=()=>{ const v=inp.value.trim(); if(!v) return; addJournal({type:"note",text:v}); render(); };
+  document.getElementById("logAdd").onclick=add; inp.onkeydown=e=>{ if(e.key==="Enter") add(); };
+  document.getElementById("copyMd").onclick=async()=>{
+    let md=`# Then → Now — ${lang==="ko"?"내 노트":"My notes"}\n\n`;
+    M.forEach(m=>{ const ms=L.filter(l=>l.m===m.id && (ls(l.id).note||"").trim()); if(!ms.length) return; md+=`## ${m.no} ${tx(m)}\n\n`;
+      ms.forEach(l=>{ md+=`### ${tx(l.title)} (${t(statusOf(l))})\n\n${ls(l.id).note.trim()}\n\n`; }); });
+    try{ await navigator.clipboard.writeText(md); toast(t("copied")); }catch(e){ toast(t("copyFail")); }
+  };
+}
+
+/* ---------- render ---------- */
+function render(){
+  document.documentElement.lang=lang;
+  const sk=document.querySelector(".skip"); if(sk) sk.textContent = lang==="ko"?"본문으로 건너뛰기":"Skip to content";
+  const mb=document.getElementById("menuBtn"); if(mb) mb.setAttribute("aria-label", lang==="ko"?"메뉴 열기":"Open menu");
+  renderNav();
+  const v=document.getElementById("view");
+  clearTimeout(SC.timer); SC.playing=false; stopVoice();
+  if(route.view==="lesson"){ v.innerHTML=renderLesson(route.id); bindLesson(route.id); bindScene(route.id); }
+  else if(route.view==="log"){ v.innerHTML=renderLog(); bindLog(); }
+  else v.innerHTML=renderHome();
+}
+function softRefresh(){ // remote update: avoid wiping a note being typed
+  if(route.view==="lesson" && ((document.activeElement && document.activeElement.id==="note") || SC.voiced || SC.playing)){ renderNav(); return; }
+  render();
+}
+document.querySelectorAll(".lang button").forEach(b=>b.onclick=()=>{ lang=b.dataset.lang; try{localStorage.setItem("tn-lang",lang)}catch(e){} render(); });
+document.getElementById("menuBtn").onclick=()=>{ const sd=document.getElementById("side"), on=sd.classList.toggle("open"); document.getElementById("menuBtn").setAttribute("aria-expanded",on); if(on){ const a=sd.querySelector("a"); if(a) a.focus(); } };
+document.addEventListener("keydown",e=>{ const sd=document.getElementById("side"); if(e.key==="Escape" && sd.classList.contains("open")){ e.preventDefault(); sd.classList.remove("open"); const m=document.getElementById("menuBtn"); m.setAttribute("aria-expanded","false"); m.focus(); } });
+document.addEventListener("keydown",e=>{
+  if(route.view!=="lesson"||/INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
+  const i=L.findIndex(l=>l.id===route.id);
+  if(e.key==="ArrowRight"&&L[i+1]) location.hash="l-"+L[i+1].id;
+  if(e.key==="ArrowLeft"&&L[i-1]) location.hash="l-"+L[i-1].id;
+});
+parse(); render();
+})();
+</script>
+</body>
+</html>

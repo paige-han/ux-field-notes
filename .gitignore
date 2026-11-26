@@ -1,0 +1,11 @@
+# 수업 녹화본·받아쓰기·소리 파일은 저장소에 올리지 않는다
+transcripts/
+*.srt
+*.opus
+*.m4a
+*.mp4
+*.tar.gz
+session-index.md
+.DS_Store
+._*
+__pycache__/
