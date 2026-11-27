@@ -137,6 +137,20 @@ with sync_playwright() as p:
     check("scene has no sideways overflow on mobile", sw[0] <= sw[1] + 1, str(sw))
     k.close()
 
+
+    # mock-up markers: home list jumps to the first mock-up, progress bar is dotted, header button cycles
+    k = browser.new_page(viewport={"width": 1200, "height": 900})
+    k.goto("http://localhost:8790/#home"); k.wait_for_timeout(600)
+    n_links = k.locator(".mklist a").count()
+    k.click('.mklist a[data-mk="hifi-review"]'); k.wait_for_timeout(700)
+    on_mock = k.evaluate("!!document.querySelector('#cardbox .mock')")
+    dots = k.locator(".segs .seg.mk").count()
+    first = k.evaluate("document.querySelector('#cardbox .mock p').textContent")
+    k.click("#scMock"); k.wait_for_timeout(300)
+    second = k.evaluate("document.querySelector('#cardbox .mock p').textContent")
+    check("mock-up markers and jumps work", n_links >= 12 and on_mock and dots == 7 and first != second, str([n_links, on_mock, dots, first, second]))
+    k.close()
+
     check("no console or page errors", not errors, "; ".join(errors)[:300])
     browser.close()
 

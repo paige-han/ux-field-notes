@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#F4F4F7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#131219" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#0A0908">
 <meta name="description" content="A personal UX textbook that sets what I learned then beside how I see it now, with notes, quizzes and class scenes.">
 <title>Then → Now: UX Field Notes</title>
-<link rel="preload" href="fonts/PretendardVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/HostGrotesk.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/DMSans.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 /* Hallmark · checked: 2026-11-25 · genre: editorial (inferred) · shape: app screen
  * floor: see sweep · fixed: 3, 7a, 9, 10, 10a, 11, 29, 34, 38iii, 39a, 40, 48, 54, 63, 75, F3, F19, F23, F24
@@ -167,6 +167,17 @@ h3.sec{font-weight:700;font-size:22px;letter-spacing:-.02em;margin:44px 0 14px}
 .scene-head{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--rule);font-size:13px}
 .scene-head b{font-weight:700;white-space:nowrap}.scene-head .draft{white-space:nowrap}
 .scene-head .src{border:0;padding:0;color:var(--ink-3);font-size:12px}
+.mki{flex:none}
+.mkn{display:inline-flex;align-items:center;gap:3px;margin-left:auto;font-size:11px;font-weight:600;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.mkn + .chk{margin-left:6px}
+.mkjump{margin-left:auto;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font:inherit;font-size:12px;font-weight:600;color:var(--ink);background:none;border:1px solid var(--rule);border-radius:999px;padding:4px 10px;cursor:pointer}
+.mkjump:hover{border-color:var(--ink-3)}
+.segs .seg{position:relative}
+.segs .seg.mk::before{content:"";position:absolute;left:50%;top:1px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--now)}
+.mkintro{margin:0 0 10px;color:var(--ink-2);font-size:14px}
+.mklist{list-style:none;margin:0 0 8px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:0 24px;border-top:1px solid var(--rule)}
+.mklist a{display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px solid var(--rule);color:var(--ink);text-decoration:none;font-size:14px}
+.mklist a:hover span:first-child{text-decoration:underline}
 .draft{font-size:11px;font-weight:600;color:var(--evolved);border:1px solid currentColor;border-radius:4px;padding:0 5px}
 .stage{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:26px 26px 20px;min-height:300px;color:var(--stage-ink);
   background:var(--stage-bg)}
@@ -237,6 +248,134 @@ h3.sec{font-weight:700;font-size:22px;letter-spacing:-.02em;margin:44px 0 14px}
   h2.title{font-size:30px}
   .how{grid-template-columns:1fr}
 }
+
+/* ===== Theme 2: dark, from the Message design system (colour roles, Host Grotesk + DM Sans, hairline borders, pill buttons) ===== */
+@font-face{font-family:"Host Grotesk";src:url("fonts/HostGrotesk.woff2") format("woff2-variations");font-weight:300 800;font-style:normal;font-display:swap}
+@font-face{font-family:"DM Sans";src:url("fonts/DMSans.woff2") format("woff2-variations");font-weight:100 1000;font-style:normal;font-display:swap}
+:root{
+  --paper:#0A0908; --paper-2:#0A0A0A; --card:#121212; --ink:#FFFFFF; --ink-2:rgba(255,255,255,.72); --ink-3:#858585;
+  --rule:rgba(255,255,255,.16); --field-line:rgba(255,255,255,.32); --on-accent:#0F0F0F; --wrong:#FF8A7A; --shadow:rgba(0,0,0,.6);
+  --accent:#E8FF9C; --accent-20:rgba(232,255,156,.2); --fill-20:rgba(255,255,255,.2); --fill-12:rgba(255,255,255,.12);
+  --stage-bg:#000000; --stage-ink:#FFFFFF; --stage-ink-2:rgba(255,255,255,.72); --stage-ink-3:#858585; --stage-on:#FFFFFF; --bubble-bg:#121212; --bubble-line:rgba(255,255,255,.16); --bubble-now-bg:#1B1B1B; --bubble-now-line:rgba(255,255,255,.55);
+  --then:rgba(255,255,255,.42); --then-bg:rgba(255,255,255,.07); --now:#FFFFFF; --now-bg:rgba(255,255,255,.2);
+  --holds:#FFFFFF; --evolved:#FFFFFF; --new:#E8FF9C; --fading:#858585;
+  --ring:#E8FF9C; --radius:12px; color-scheme:dark;
+  --display:"Host Grotesk","Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo",system-ui,sans-serif;
+  --sans:"DM Sans","Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Segoe UI",system-ui,sans-serif;
+}
+body{font-size:16px;line-height:1.55;letter-spacing:0}
+h1,h2,h3,.brand h1,.side .yr,.tally dd,.modlist b,.mod .mt,.scene-head b{font-family:var(--display);font-weight:500;letter-spacing:-.03em}
+h2.title{font-size:44px;line-height:1.08;font-weight:500}
+.hero h2{font-size:64px;line-height:1;font-weight:500}
+section.block h3,h3.sec{font-weight:500}
+aside{background:var(--paper-2)}
+.brand h1{font-size:21px}
+.lang{background:transparent}
+.lang button[aria-pressed="true"]{background:var(--ink);color:var(--on-accent);font-weight:500}
+.bar{background:var(--fill-12)} .bar>span{background:var(--accent)}
+.navtop a{background:transparent;border-radius:999px}
+.navtop a.on{background:var(--fill-12);border-color:transparent;font-weight:500}
+.mod>button:hover,.lessons a:hover{background:var(--fill-12)}
+.lessons a.on{background:var(--fill-12);box-shadow:none;font-weight:500}
+.chk{color:var(--accent)}
+.newtag{color:var(--on-accent);background:var(--accent);border-color:var(--accent);border-radius:999px;padding:0 7px;font-weight:500}
+/* status marks: shape and fill carry the meaning, not hue alone */
+.dot{width:9px;height:9px;box-sizing:border-box}
+.s-holds{background:#fff}
+.s-evolved{background:linear-gradient(90deg,#fff 50%,transparent 50%);border:1.5px solid #fff}
+.s-new{background:var(--accent);box-shadow:0 0 0 3px var(--accent-20)}
+.s-fading{background:transparent;border:1.5px dashed #858585}
+.tally dt .dot{width:9px;height:9px}
+.stbadge{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;border-radius:999px;padding:4px 12px 4px 10px;border:1px solid var(--rule);margin:0 0 14px}
+.stbadge.holds{color:#fff}
+.stbadge.evolved{background:var(--fill-20);border-color:transparent;color:#fff}
+.stbadge.new{background:var(--accent);border-color:var(--accent);color:var(--on-accent)} .stbadge.new .dot{background:var(--on-accent);box-shadow:none}
+.stbadge.fading{color:var(--ink-3);border-style:dashed}
+.pill{background:transparent;color:var(--ink-3);padding:6px 14px;font-size:14px}
+.pill[aria-pressed="true"]{font-weight:500}
+.pill.holds[aria-pressed="true"]{color:#fff;border-color:#fff}
+.pill.evolved[aria-pressed="true"]{color:#fff;background:var(--fill-20);border-color:transparent}
+.pill.new[aria-pressed="true"]{color:var(--on-accent);background:var(--accent);border-color:var(--accent)} .pill.new[aria-pressed="true"] .dot{background:var(--on-accent);box-shadow:none}
+.pill.fading[aria-pressed="true"]{color:var(--ink-2);border-style:dashed;border-color:var(--ink-3)}
+.src{border-style:solid;color:var(--ink-3)}
+/* Then is quiet translucent grey, Now is the strongest tone on the page */
+.compare{background:transparent;border-radius:16px}
+.side.then{background:rgba(255,255,255,.035)} .side.then .yr{color:var(--then)} .side.then li{color:var(--ink-2)} .side.then .cap{color:var(--ink-3)}
+.side.now{background:var(--card)} .side.now .yr{color:#fff} .side.now li{color:#fff}
+.arrow{background:#fff;color:var(--on-accent)}
+.ccard .sh .a{background:var(--then-bg);color:var(--ink-2)} .ccard .sh .b{background:#fff;color:var(--on-accent)}
+.ccard .vs .em{color:var(--accent)}
+.btn{border-radius:999px;background:transparent;padding:10px 18px;font-weight:500}
+.btn.primary{background:#fff;color:var(--on-accent);border-color:#fff}
+.btn.done{background:var(--accent-20);border-color:transparent;color:var(--accent)}
+.btn:disabled{background:transparent;color:var(--ink-3)}
+@media (hover:hover){.btn.primary:hover{background:rgba(255,255,255,.85)}}
+.task,.quiz{border-radius:16px}
+.opt{background:transparent} .opt.right{border-color:var(--accent);background:var(--accent-20)} .opt.wrong{background:rgba(255,138,122,.12)}
+textarea{background:var(--card);border-color:var(--rule);border-radius:16px}
+.scene{border-radius:20px;background:var(--card)}
+.ccard{background:var(--card);border-color:var(--rule);border-radius:16px}
+.ccard.mock svg{background:#1B1B1B}
+.ccard.mock svg text{fill:#9A9A9A}
+.segs .seg i{background:var(--fill-20)} .segs .seg.past i{background:rgba(255,255,255,.6)} .segs .seg.cur i::after{background:#fff}
+.segs .seg.mk::before{background:var(--accent);width:6px;height:6px;margin-left:-3px;top:0}
+.mkjump{border-color:var(--rule)} .mkjump .mki,.mkn .mki{color:var(--accent)}
+.draft{color:var(--ink-2)}
+.timeline li.ed::before{border-color:var(--accent);background:var(--accent)} .timeline li.st::before{border-color:#fff} .timeline li.dn::before{border-color:#fff;background:#fff}
+@media (max-width:900px){h2.title{font-size:32px;line-height:1.12}.hero h2{font-size:46px}.src{border-radius:14px}}
+
+/* accent used actively: the "Now" side, primary actions, the current place, and the path forward */
+::selection{background:var(--accent);color:var(--on-accent)}
+.brand h1 i,.hero h2 i{font-style:normal;color:var(--accent)}
+.btn.primary,.controls button.play{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+@media (hover:hover){.btn.primary:hover,.controls button.play:not(:disabled):hover{background:#F1FFC2;border-color:#F1FFC2}}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.navtop a.on{background:var(--accent-20);color:var(--accent)}
+.lessons a.on{background:var(--accent-20);color:#fff;box-shadow:inset 2px 0 0 var(--accent)}
+.modlist .no{color:var(--accent)}
+.modlist a:hover b{color:var(--accent)}
+.mklist a:hover span:first-child{color:var(--accent);text-decoration:none}
+h3.sec::before,section.block h3::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:10px;vertical-align:middle;position:relative;top:-2px;flex:none;align-self:center}
+.side.now{box-shadow:inset 0 2px 0 var(--accent)}
+.side.now .yr{color:var(--accent)}
+.arrow{background:var(--accent);color:var(--on-accent)}
+.ccard .sh .b{background:var(--accent);color:var(--on-accent)}
+.segs .seg.cur i::after{background:var(--accent)}
+.bubble.now{border-color:var(--accent);background:rgba(232,255,156,.08)}
+.vtoggle[aria-pressed="true"]{color:var(--accent);border-color:var(--accent)}
+.pill.holds[aria-pressed="true"]{border-color:var(--accent)}
+.opt:not(:disabled):hover{border-color:var(--accent)}
+textarea:focus{border-color:var(--accent)}
+.tally dd{color:#fff}
+.tally div:last-child dd{color:var(--accent)}
+a.btn:not(.primary):hover,.footer-nav .btn:hover{border-color:var(--accent);color:var(--accent)}
+section.block h3{align-items:center;gap:10px} section.block h3::before{margin-right:0;top:0}
+
+/* reference-site traits: square cards with hairlines, two-tone headings, dot eyebrows, generous spacing */
+.weak{color:var(--ink-3)}
+.scene,.compare,.task,.quiz,.ccard,textarea,.opt,.bubble,.ccard.mock svg,.mod>button,.lessons a{border-radius:0}
+.wrap{max-width:1080px;padding:56px 56px 140px}
+.hero{position:relative;padding:72px 0 56px;align-items:end}
+.hero::before{content:"";position:absolute;inset:-56px -56px 0;z-index:-1;pointer-events:none;background:radial-gradient(60% 90% at 78% 0%,rgba(232,255,156,.13),transparent 70%),radial-gradient(50% 80% at 10% 10%,rgba(120,150,150,.16),transparent 70%)}
+.hero h2{font-size:76px;letter-spacing:-.04em}
+.hero h2 .weak{color:rgba(255,255,255,.42)}
+.brand h1 .weak{color:rgba(255,255,255,.45)}
+.summary{font-family:var(--display);font-size:26px;line-height:1.2;letter-spacing:-.03em;color:var(--ink-3);max-width:760px;margin:44px 0 28px}
+.summary b{font-weight:500;color:#fff}
+h3.sec{font-size:30px;line-height:1.12;margin:88px 0 22px;display:block}
+h3.sec::before{display:none}
+.eb{display:flex;align-items:center;gap:8px;font-family:var(--sans);font-size:13px;font-weight:400;letter-spacing:0;color:var(--ink-3);margin-bottom:12px}
+.eb::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
+section.block{margin-top:64px}
+section.block h3{font-size:24px}
+.modlist a{padding:22px 4px;transition:padding .2s}
+.modlist b{font-size:20px;font-weight:500}
+@media (hover:hover){.modlist a:hover{background:transparent;padding-left:12px}}
+.side{padding:32px 32px 34px}
+.side.now{box-shadow:inset 2px 0 0 var(--accent)}
+.how>div{border-top-color:var(--rule)}
+@media (max-width:900px){.wrap{padding:28px 20px 100px}.hero{padding:36px 0 32px}.hero::before{inset:-28px -20px 0}.hero h2{font-size:52px}.summary{font-size:21px}h3.sec{font-size:25px;margin-top:64px}.side.now{box-shadow:inset 0 2px 0 var(--accent)}}
+.controls button{border-radius:999px;background:transparent}
 </style>
 </head>
 <body>
@@ -244,7 +383,7 @@ h3.sec{font-weight:700;font-size:22px;letter-spacing:-.02em;margin:44px 0 14px}
 <div class="app">
   <aside id="side">
     <div class="brand">
-      <h1>Then <i>→</i> Now<br>UX Field Notes</h1>
+      <h1><span class="weak">Then</span> <i>→</i> Now<br>UX Field Notes</h1>
       <div class="row">
         <div class="lang" role="group" aria-label="Language">
           <button data-lang="en">EN</button><button data-lang="ko">한국어</button>
@@ -361,6 +500,7 @@ function toast(msg){ const el=document.getElementById("toast"); el.textContent=m
 /* ---------- routing ---------- */
 let route={view:"home"};
 function parse(){ const h=location.hash.slice(1); if(h==="log") route={view:"log"}; else if(h.startsWith("l-")&&byId[h.slice(2)]) route={view:"lesson",id:h.slice(2)}; else route={view:"home"}; }
+document.addEventListener("click",e=>{ const a=e.target.closest&&e.target.closest("a[data-mk]"); if(a) window.__mkJump=a.getAttribute("data-mk"); },true);
 window.addEventListener("hashchange",()=>{ parse(); render(); window.scrollTo(0,0); const sd=document.getElementById("side"); if(sd.classList.contains("open")){ sd.classList.remove("open"); document.getElementById("menuBtn").setAttribute("aria-expanded","false"); } const v=document.getElementById("view"); if(v) v.focus({preventScroll:true}); });
 
 /* ---------- sidebar ---------- */
@@ -374,7 +514,7 @@ function renderNav(){
   M.forEach(m=>{
     const ls_=L.filter(l=>l.m===m.id); const dn=ls_.filter(l=>ls(l.id).done).length;
     h+=`<div class="mod ${collapsed.has(m.id)?"collapsed":""}"><button data-mod="${m.id}" aria-expanded="${!collapsed.has(m.id)}"><span class="no">${m.no}</span><span class="mt">${esc(tx(m))}${m.isNew?`<span class="newtag">${lang==="ko"?"새 모듈":"New"}</span>`:""}</span><span class="mc">${dn}/${ls_.length}</span></button><ul class="lessons">`;
-    ls_.forEach(l=>{ h+=`<li><a href="#l-${l.id}" class="${route.id===l.id?"on":""}"><span class="dot s-${statusOf(l)}" title="${esc(t(statusOf(l)))}"></span><span>${esc(tx(l.title))}</span>${ls(l.id).done?'<span class="chk">✓</span>':""}</a></li>`; });
+    ls_.forEach(l=>{ h+=`<li><a href="#l-${l.id}" class="${route.id===l.id?"on":""}"><span class="dot s-${statusOf(l)}" title="${esc(t(statusOf(l)))}"></span><span>${esc(tx(l.title))}</span>${mockBeats(l.id).length?`<span class="mkn" title="${esc(mkLabel(mockBeats(l.id).length))}">${MKI}${mockBeats(l.id).length}</span>`:""}${ls(l.id).done?'<span class="chk">✓</span>':""}</a></li>`; });
     h+=`</ul></div>`;
   });
   const nav=document.getElementById("nav"); nav.innerHTML=h;
@@ -387,16 +527,19 @@ function renderHome(){
   const counts = Object.fromEntries(STATUSES.map(s=>[s,L.filter(l=>statusOf(l)===s).length]));
   const d=doneCount(); const nextL = L.find(l=>!ls(l.id).done) || L[0];
   let h=`<div class="hero"><div>
-    <h2>Then → Now</h2></div>
+    <h2><span class="weak">Then</span> <i>→</i> Now</h2></div>
     <div><p>${esc(t("heroP"))}</p><a class="btn primary" href="#l-${nextL.id}">${esc(d?t("start"):t("begin"))}</a></div></div>`;
   h+=`<p class="summary">${lang==="ko"
-      ? `레슨 ${L.length}개 중 ${d}개를 마쳤어요. 그때 배운 것 가운데 ${counts.holds}개는 여전히 유효하고, ${counts.evolved}개는 진화했고, ${counts.new}개는 새로 생겼어요.`
-      : `${d} of ${L.length} lessons done. Of what I learned then, ${counts.holds} still hold, ${counts.evolved} have evolved and ${counts.new} are new.`}</p>`;
+      ? `<b>레슨 ${L.length}개 중 ${d}개를 마쳤어요.</b> 그때 배운 것 가운데 ${counts.holds}개는 여전히 유효하고, ${counts.evolved}개는 진화했고, ${counts.new}개는 새로 생겼어요.`
+      : `<b>${d} of ${L.length} lessons done.</b> Of what I learned then, ${counts.holds} still hold, ${counts.evolved} have evolved and ${counts.new} are new.`}</p>`;
   h+=`<div class="shift"><div class="eyebrow" style="margin-bottom:8px">${esc(t("shiftT"))}</div><dl class="tally">${STATUSES.filter(s=>counts[s]).map(s=>`<div><dt><span class="dot s-${s}" aria-hidden="true"></span>${esc(t(s))}</dt><dd>${counts[s]}</dd></div>`).join("")}</dl></div>`;
-  h+=`<h3 class="sec">${esc(t("modulesT"))}</h3><ol class="modlist">`;
+  h+=`<h3 class="sec"><span class="eb">${lang==="ko"?"커리큘럼":"Curriculum"}</span>${lang==="ko"?`모듈 ${M.length}개, <span class="weak">레슨 ${L.length}개.</span>`:`${M.length} modules, <span class="weak">${L.length} lessons.</span>`}</h3><ol class="modlist">`;
   M.forEach(m=>{ const ms=L.filter(l=>l.m===m.id); const first=ms.find(l=>!ls(l.id).done)||ms[0]; const dn=ms.filter(l=>ls(l.id).done).length;
     h+=`<li><a href="#l-${first.id}"><span class="no">${m.no}</span><span class="mt"><b>${esc(tx(m))}</b>${m.isNew?` <span class="newtag">${lang==="ko"?"새 모듈":"New"}</span>`:""}<span class="ml">${ms.map(l=>esc(tx(l.title))).join(", ")}</span></span><span class="mp">${dn}/${ms.length}</span></a></li>`; });
-  h+=`</ol><h3 class="sec">${esc(t("howT"))}</h3><div class="how">${t("how").map(([a,b])=>`<div><b>${esc(a)}</b>${esc(b)}</div>`).join("")}</div>`;
+  h+=`</ol>`;
+  const mk=L.map(l=>[l,mockBeats(l.id)]).filter(x=>x[1].length); const mkN=mk.reduce((a,x)=>a+x[1].length,0);
+  if(mk.length) h+=`<h3 class="sec"><span class="eb">${lang==="ko"?"목업":"Mock-ups"}</span>${lang==="ko"?`고치기 전, <span class="weak">고친 뒤.</span>`:`Before, <span class="weak">and after.</span>`}</h3><p class="mkintro">${lang==="ko"?`과제 피드백을 화면으로 그린 목업 ${mkN}개가 강의 ${mk.length}곳의 수업 장면에 있어요. 누르면 그 강의의 첫 목업으로 가요.`:`${mkN} mock-ups in ${mk.length} lessons draw the homework feedback as screens. Each link opens that lesson at its first mock-up.`}</p><ul class="mklist">${mk.map(([l,b])=>`<li><a href="#l-${l.id}" data-mk="${l.id}"><span>${esc(tx(l.title))}</span><span class="mkn">${MKI}${b.length}</span></a></li>`).join("")}</ul>`;
+  h+=`<h3 class="sec"><span class="eb">${lang==="ko"?"사용법":"How to use it"}</span>${lang==="ko"?`나란히 읽고, <span class="weak">내 판단을 남긴다.</span>`:`Read in pairs, <span class="weak">record your take.</span>`}</h3><div class="how">${t("how").map(([a,b])=>`<div><b>${esc(a)}</b>${esc(b)}</div>`).join("")}</div>`;
   return h;
 }
 
@@ -405,7 +548,7 @@ function renderLesson(id){
   const l=byId[id], s=ls(id), m=M.find(x=>x.id===l.m), idx=L.indexOf(l);
   const prev=L[idx-1], next=L[idx+1], st=statusOf(l);
   const q=l.quiz, ans=s.quiz;
-  let h=`<h2 class="title">${esc(tx(l.title))}</h2>
+  let h=`<div><span class="stbadge ${st}"><span class="dot s-${st}"></span>${esc(t(st))}</span></div><h2 class="title">${tt(tx(l.title))}</h2>
     <span class="src">${esc(t("src"))}: ${esc(tx(l.src))}</span>
     <div class="statusrow" role="group" aria-label="${esc(t("status"))}"><span class="lbl">${esc(t("status"))}</span>
       ${STATUSES.map(x=>`<button class="pill ${x}" data-st="${x}" aria-pressed="${x===st}"><span class="dot s-${x}"></span>${esc(t(x))}</button>`).join("")}</div>
@@ -618,14 +761,18 @@ function cardHTML(c){
   if(c.kind==="shift") return `<div class="ccard"><div class="sh"><div class="a"><small>${lang==="ko"?"그때":"Then"}</small>${esc(tx(c.then))}</div><div style="text-align:center;padding:0;color:var(--ink-3)">↓</div><div class="b"><small>${lang==="ko"?"지금":"Now"}</small>${esc(tx(c.now))}</div></div></div>`;
   return "";
 }
+const tt=str=>{ const m=/^(.*?(?::\s| · ))(.+)$/.exec(str); return m?`${esc(m[1])}<span class="weak">${esc(m[2])}</span>`:esc(str); };
+const mockBeats=id=>{ const sc=C.scenes&&C.scenes[id]; return sc?sc.beats.map((b,i)=>b.card&&b.card.kind==="mock"?i:-1).filter(i=>i>=0):[]; };
+const MKI='<svg class="mki" width="13" height="12" viewBox="0 0 13 12" aria-hidden="true"><rect x=".75" y=".75" width="4.5" height="10.5" rx="1.4" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="7.75" y=".75" width="4.5" height="10.5" rx="1.4" fill="currentColor" stroke="currentColor" stroke-width="1.5"/></svg>';
+const mkLabel=n=>lang==="ko"?`목업 ${n}`:`${n} mock-up${n>1?"s":""}`;
 const SC={i:0,playing:false,timer:null,lastCard:null};
 function sceneUI(id){
   const sc=C.scenes&&C.scenes[id]; if(!sc) return "";
   const used=new Set(sc.beats.map(b=>b.who));
   const opt=new Set(["now","t","t2"]); const ids=["t","t2","min","seo","jun","ria","me","now"].filter(k=>C.cast[k] && (!opt.has(k) || used.has(k)));
-  return `<div class="scene" id="scene"><div class="scene-head"><b>${lang==="ko"?"수업 장면":"Class scene"}</b>${sc.draft?`<span class="draft">${lang==="ko"?"가안":"DRAFT"}</span>`:""}<span class="src">${esc(tx(sc.source))}</span></div>
+  return `<div class="scene" id="scene"><div class="scene-head"><b>${lang==="ko"?"수업 장면":"Class scene"}</b>${sc.draft?`<span class="draft">${lang==="ko"?"가안":"DRAFT"}</span>`:""}<span class="src">${esc(tx(sc.source))}</span>${mockBeats(id).length?`<button type="button" class="mkjump" id="scMock" title="${lang==="ko"?"다음 목업으로":"Go to the next mock-up"}">${MKI}${esc(mkLabel(mockBeats(id).length))}</button>`:""}</div>
     <div class="stage"><button class="vtoggle" id="scVoice" aria-pressed="false" hidden><span class="vi" aria-hidden="true"></span><span class="vl"></span></button><div class="cast">${ids.map(w=>`<div class="who" data-who="${w}">${avatar(C.cast[w],66)}<span>${esc(tx(C.cast[w]))}</span></div>`).join("")}</div><div class="talk"><div class="bubble" id="bubble" aria-live="polite"></div></div><div class="cardbox" id="cardbox"></div></div>
-    <div class="controls"><button class="play" id="scPlay"><span class="pi" aria-hidden="true"></span><span class="pl"></span></button><div class="segs paused" id="segs">${sc.beats.map((_,i)=>`<button type="button" class="seg" data-seg="${i}" aria-label="${lang==="ko"?`장면 ${i+1}`:`Scene ${i+1}`}"><i></i></button>`).join("")}</div><button id="scPrev" class="step" aria-label="${lang==="ko"?"이전 장면":"Previous scene"}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M9 2L4 7l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button id="scNext" class="step" aria-label="${lang==="ko"?"다음 장면":"Next scene"}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M5 2l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+    <div class="controls"><button class="play" id="scPlay"><span class="pi" aria-hidden="true"></span><span class="pl"></span></button><div class="segs paused" id="segs">${sc.beats.map((_,i)=>`<button type="button" class="seg${_.card&&_.card.kind==="mock"?" mk":""}" data-seg="${i}" aria-label="${lang==="ko"?`장면 ${i+1}`:`Scene ${i+1}`}${_.card&&_.card.kind==="mock"?(lang==="ko"?" (목업)":" (mock-up)"):""}"><i></i></button>`).join("")}</div><button id="scPrev" class="step" aria-label="${lang==="ko"?"이전 장면":"Previous scene"}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M9 2L4 7l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button id="scNext" class="step" aria-label="${lang==="ko"?"다음 장면":"Next scene"}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M5 2l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
     <div class="note-fic">${lang==="ko"?"등장인물은 가상의 캐릭터이며, 대화는 수업 내용을 바탕으로 재구성했습니다.":"Characters are fictional; dialogue is reconstructed from the class content."}</div></div>`;
 }
 function beatDur(b){ return Math.min(9000, 1600 + tx(b.text).length*65); }
@@ -643,7 +790,7 @@ function showBeat(id,i){
   if(card!==SC.lastCard){ document.getElementById("cardbox").innerHTML=cardHTML(card); SC.lastCard=card; }
   const pv=document.getElementById("scPrev"), nx=document.getElementById("scNext"); if(pv) pv.disabled=(i===0); if(nx) nx.disabled=(i===sc.beats.length-1);
   const d=beatDur(b);
-  document.querySelectorAll("#segs .seg").forEach((s,j)=>{ s.className="seg "+(j<i?"past":(j===i?"cur":"")); s.style.setProperty("--d",d+"ms"); if(j===i) s.setAttribute("aria-current","step"); else s.removeAttribute("aria-current"); });
+  document.querySelectorAll("#segs .seg").forEach((s,j)=>{ s.className="seg "+(j<i?"past":(j===i?"cur":""))+(sc.beats[j].card&&sc.beats[j].card.kind==="mock"?" mk":""); s.style.setProperty("--d",d+"ms"); if(j===i) s.setAttribute("aria-current","step"); else s.removeAttribute("aria-current"); });
   const segs=document.getElementById("segs"); segs.classList.toggle("paused",!SC.playing||SC.voiced);
   const cur=segs.querySelector(".seg.cur"); if(cur){ cur.classList.remove("cur"); void cur.offsetWidth; cur.classList.add("cur"); }
   if(SC.playing && !SC.voiced){ SC.timer=setTimeout(()=>{ if(i+1<sc.beats.length) showBeat(id,i+1); else { SC.playing=false; setPlayLabel(); document.getElementById("segs").classList.add("paused"); } }, d); }
@@ -708,6 +855,8 @@ function bindScene(id){
     if(SC.playing){ SC.playing=false; stopVoice(); setPlayLabel(); showBeat(id,SC.i); return; }
     SC.playing=true; if(SC.i>=n-1) SC.i=0; setPlayLabel();
     if(VO.on&&VO.t) speakFrom(id,SC.i); else showBeat(id,SC.i); };
+  const mb=document.getElementById("scMock"); if(mb) mb.onclick=()=>{ const m=mockBeats(id); const j=m.find(x=>x>SC.i); go(j===undefined?m[0]:j); };
+  if(window.__mkJump===id){ window.__mkJump=null; const m=mockBeats(id); if(m.length){ showBeat(id,m[0]); setTimeout(()=>{ const el=document.getElementById("scene"); if(el) el.scrollIntoView({block:"start"}); },60); } }
   document.getElementById("scNext").onclick=()=>{ if(SC.i+1<n) go(SC.i+1); };
   document.getElementById("scPrev").onclick=()=>{ if(SC.i>0) go(SC.i-1); };
   document.querySelectorAll("#segs .seg").forEach(s=>s.onclick=()=>go(+s.dataset.seg));

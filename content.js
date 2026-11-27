@@ -1,6 +1,6 @@
 // Course content. Edit or add lessons here; the page renders whatever is in COURSE.
 window.COURSE = {
-  version: "1.3",
+  version: "1.5",
   modules: [
     { id: "m1", no: "01", ko: "디자인의 기초", en: "Foundations" },
     { id: "m2", no: "02", ko: "비주얼 & 반응형", en: "Visual & Responsive" },
@@ -13,6 +13,12 @@ window.COURSE = {
     { id: "m9", no: "09", ko: "실무 & 커리어", en: "Practice & Career" }
   ],
   changelog: [
+    { date: "2026-11-25", version: "1.5",
+      ko: "연두색 강조를 더 넓게 사용: 주요 버튼, Now 쪽, 현재 위치 표시, 섹션 라벨, 모듈 번호. 레이아웃은 참고 사이트를 따라 각진 카드, 두 톤 제목, 넉넉한 여백으로 바꿈.",
+      en: "The lime accent is used more widely: primary buttons, the Now side, current-position cues, section labels and module numbers. Layout follows the reference site: square cards, two-tone headings, more space." },
+    { date: "2026-11-25", version: "1.4",
+      ko: "전체 디자인을 어두운 테마로 교체(새 서체, 알약형 버튼, 얇은 선). Then은 반투명 회색, Now는 가장 강한 색으로. 상태(여전히 유효/진화/새로 생김)는 제목 위 배지와 모양이 다른 점으로 표시. 목업이 있는 강의와 단계에 표시 추가, 홈에 목업 목록 추가.",
+      en: "Whole site moved to a dark theme (new typefaces, pill buttons, hairline borders). Then is translucent grey, Now is the strongest tone. Status (still holds / evolved / new) shows as a badge above the title and as differently shaped marks. Lessons and scene steps with mock-ups are marked, and the home page lists them." },
     { date: "2026-11-25", version: "1.3",
       ko: "수업 장면에 목업 카드 30개 추가: 피드백을 고치기 전/후 화면으로 보여줌(모서리, 간격, 주색, 위계, 그리드, 60-30-10, 오류 문장 등). 실제 과제 화면이 아니라 피드백의 요점만 그린 도식.",
       en: "30 mock-up cards in the class scenes show feedback as before/after screens (corners, gaps, primary colour, hierarchy, grid, 60-30-10, error text and more). They are schematic drawings of the point being made, not anyone's actual work." },
